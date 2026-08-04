@@ -29,7 +29,7 @@ export function CheckboxGroup({
             <label
               key={option.value}
               htmlFor={inputId}
-              className="flex cursor-pointer items-center gap-2.5 rounded-sm px-1 py-1 text-[13px] text-muted transition hover:bg-brand-50 hover:text-ink"
+              className="flex cursor-pointer items-center gap-2.5 rounded px-1 py-1 text-[13px] text-[#5a7079] transition hover:bg-brand-50 hover:text-[#244d5c]"
             >
               <input
                 id={inputId}
@@ -37,7 +37,7 @@ export function CheckboxGroup({
                 name={name}
                 checked={checked}
                 onChange={() => onToggle(option.value)}
-                className="h-4 w-4 rounded-sm border-line accent-brand-700 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-brand-600"
+                className="h-4 w-4 rounded-sm border-[#aebbc1] accent-brand-600 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-brand-600"
               />
               <span>{option.label}</span>
             </label>

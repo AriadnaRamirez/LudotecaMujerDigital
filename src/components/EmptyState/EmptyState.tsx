@@ -5,24 +5,24 @@ interface EmptyStateProps {
 }
 
 export function EmptyState({
-  title = "Sin resultados",
-  message = "Prueba con otros filtros o una búsqueda distinta.",
+  title = "No encontramos recursos.",
+  message = "Prueba con otros filtros.",
   onClearFilters,
 }: EmptyStateProps) {
   return (
     <div
       role="status"
-      className="flex flex-col items-center justify-center gap-4 border border-dashed border-line bg-canvas/40 px-6 py-20 text-center"
+      className="flex flex-col items-center justify-center gap-4 rounded-[6px] border border-dashed border-[#bdc9ce] bg-[#f8fafb] px-6 py-16 text-center"
     >
       <div>
-        <p className="font-display text-2xl font-semibold text-ink">{title}</p>
-        <p className="mt-2 text-sm text-muted">{message}</p>
+        <p className="text-lg font-semibold text-[#183f4e]">{title}</p>
+        <p className="mt-1 text-sm text-[#6f838b]">{message}</p>
       </div>
       {onClearFilters && (
         <button
           type="button"
           onClick={onClearFilters}
-          className="rounded-sm bg-brand-800 px-4 py-2 text-sm font-medium text-surface transition hover:bg-brand-700 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-brand-700"
+          className="rounded-lg bg-brand-600 px-4 py-2 text-sm font-medium text-white transition hover:bg-brand-700 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-brand-700"
         >
           Limpiar filtros
         </button>

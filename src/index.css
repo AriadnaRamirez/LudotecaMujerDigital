@@ -1,41 +1,22 @@
 @import "tailwindcss";
 
 @theme {
-  --font-sans: "Sora", ui-sans-serif, sans-serif;
-  --font-display: "Cormorant Garamond", Georgia, "Times New Roman", serif;
+  --font-sans: "Arial", "Helvetica Neue", ui-sans-serif, system-ui, sans-serif;
 
-  --color-brand-50: #f3f7f5;
-  --color-brand-100: #e2ebe6;
-  --color-brand-200: #c5d7cd;
-  --color-brand-300: #9bb8a7;
-  --color-brand-400: #6f9480;
-  --color-brand-500: #4f7663;
-  --color-brand-600: #3a5c4c;
-  --color-brand-700: #2f4a3e;
-  --color-brand-800: #273c34;
-  --color-brand-900: #1c2d27;
-
-  --color-ink: #171b1a;
-  --color-muted: #6a7370;
-  --color-line: #ddd8d0;
-  --color-surface: #fffdf9;
-  --color-canvas: #f0ebe3;
-  --color-brass: #9c7c45;
+  --color-brand-50: #edfafa;
+  --color-brand-100: #d5f3f3;
+  --color-brand-200: #aae5e6;
+  --color-brand-300: #70d1d4;
+  --color-brand-400: #2db9c0;
+  --color-brand-500: #0aa5af;
+  --color-brand-600: #008c9b;
+  --color-brand-700: #007483;
+  --color-brand-800: #075d6a;
+  --color-brand-900: #173e4b;
 }
 
 :root {
   color-scheme: light;
-  --page-glow: radial-gradient(
-      1200px 500px at 8% -10%,
-      rgba(79, 118, 99, 0.14),
-      transparent 55%
-    ),
-    radial-gradient(
-      900px 420px at 92% 0%,
-      rgba(156, 124, 69, 0.1),
-      transparent 50%
-    ),
-    linear-gradient(180deg, #f5f1ea 0%, #ebe6dc 48%, #f3efe7 100%);
 }
 
 html,
@@ -45,18 +26,18 @@ body,
 }
 
 body {
-  @apply bg-canvas font-sans text-ink antialiased;
-  background-image: var(--page-glow);
-  background-attachment: fixed;
+  @apply bg-[#f2f4f8] text-[#1d4352] antialiased;
 }
 
 * {
-  scrollbar-color: #c8c2b8 transparent;
+  scrollbar-color: #cbd5e1 transparent;
 }
 
+/* Indicador de foco visible y accesible en toda la app */
 :focus-visible {
   outline: 2px solid var(--color-brand-600);
   outline-offset: 2px;
+  border-radius: 4px;
 }
 
 .sr-only-focusable:not(:focus) {
@@ -77,27 +58,12 @@ body {
     opacity: 1;
   }
   50% {
-    opacity: 0.55;
+    opacity: 0.5;
   }
 }
 
 .animate-skeleton {
   animation: skeleton-pulse 1.5s ease-in-out infinite;
-}
-
-@keyframes rise-in {
-  from {
-    opacity: 0;
-    transform: translateY(10px);
-  }
-  to {
-    opacity: 1;
-    transform: translateY(0);
-  }
-}
-
-.animate-rise {
-  animation: rise-in 0.55s ease-out both;
 }
 
 .line-clamp-2 {
@@ -112,8 +78,4 @@ body {
   -webkit-line-clamp: 3;
   -webkit-box-orient: vertical;
   overflow: hidden;
-}
-
-.font-display {
-  font-family: var(--font-display);
 }
