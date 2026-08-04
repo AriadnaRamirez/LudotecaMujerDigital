@@ -2,27 +2,25 @@ import { Link } from "react-router-dom";
 import type { Resource } from "../../types";
 import { Badge } from "../Badge/Badge";
 import { DifficultyBadge } from "../Badge/DifficultyBadge";
-import { FavoriteButton } from "../FavoriteButton/FavoriteButton";
 import { ShareButton } from "../ShareButton/ShareButton";
-import { useFavorites } from "../../hooks/useFavorites";
-import { useCompleted } from "../../hooks/useCompleted";
+import {
+  hasDirectLink,
+  isContributionReady,
+} from "../../utils/contributionAudit";
 
 interface ResourceCardProps {
   resource: Resource;
 }
 
 export function ResourceCard({ resource }: ResourceCardProps) {
-  const { isFavorite, toggleFavorite } = useFavorites();
-  const { isCompleted, toggleCompleted } = useCompleted();
-
-  const favorite = isFavorite(resource.id);
-  const completed = isCompleted(resource.id);
   const detailUrl = `/recurso/${resource.id}`;
   const shareUrl = `${window.location.origin}${detailUrl}`;
+  const contributionReady = isContributionReady(resource);
+  const validLink = hasDirectLink(resource.url);
 
   return (
-    <article className="group flex flex-col overflow-hidden rounded-2xl border border-slate-200 bg-white shadow-sm transition hover:-translate-y-0.5 hover:shadow-md">
-      <div className="relative h-40 w-full overflow-hidden bg-slate-100">
+    <article className="group flex min-h-[340px] flex-col overflow-hidden rounded-[6px] border border-[#dfe5e8] bg-white transition hover:border-brand-300 hover:shadow-[0_4px_14px_rgba(18,82,99,0.10)]">
+      <div className="relative h-28 w-full overflow-hidden bg-[#e7f4f5]">
         <Link
           to={detailUrl}
           aria-label={`Ver detalle de ${resource.title}`}
@@ -35,33 +33,40 @@ export function ResourceCard({ resource }: ResourceCardProps) {
             className="h-full w-full object-cover transition duration-300 group-hover:scale-105"
           />
         </Link>
-        {completed && (
-          <span className="pointer-events-none absolute left-2 top-2 z-20 inline-flex items-center gap-1 rounded-full bg-emerald-600 px-2.5 py-1 text-xs font-semibold text-white shadow">
-            <span aria-hidden="true">✅</span> Completado
-          </span>
-        )}
-        <div className="pointer-events-none absolute right-2 top-2 z-20">
-          <Badge tone="neutral" className="bg-white/90 backdrop-blur">
+        <div className="pointer-events-none absolute left-2 top-2 z-20">
+          <Badge tone="brand" className="bg-brand-500 text-white shadow-none">
             {resource.type}
           </Badge>
         </div>
+        {!contributionReady && (
+          <span className="pointer-events-none absolute right-2 top-2 z-20 rounded bg-amber-100 px-2 py-0.5 text-[10px] font-semibold text-amber-900">
+            Revisión pendiente
+          </span>
+        )}
       </div>
 
-      <div className="flex flex-1 flex-col gap-2.5 p-4">
-        <div className="flex items-center gap-2 text-xs font-medium text-slate-500">
+      <div className="flex flex-1 flex-col gap-2.5 p-3.5">
+        <div className="flex items-center gap-2 text-[11px] font-medium text-[#65808a]">
           <span>{resource.platform}</span>
-          <span aria-hidden="true">•</span>
+          <span className="text-brand-400" aria-hidden="true">•</span>
           <span>{resource.topic}</span>
         </div>
 
-        <h3 className="line-clamp-2 text-base font-semibold text-slate-900">
+        <h3 className="line-clamp-2 text-[15px] font-bold leading-snug text-[#17546a]">
           <Link
             to={detailUrl}
-            className="rounded-sm transition hover:text-brand-700 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-brand-600"
+            className="rounded-sm transition hover:text-brand-600 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-brand-600"
           >
             {resource.title}
           </Link>
         </h3>
+
+        <p className="text-[11px] text-[#6b8088]">
+          Compartido por{" "}
+          <span className="font-semibold text-[#49636d]">
+            {resource.contributorName?.trim() || "participante pendiente"}
+          </span>
+        </p>
 
         <div className="flex flex-wrap items-center gap-1.5">
           <DifficultyBadge difficulty={resource.difficulty} />
@@ -74,7 +79,7 @@ export function ResourceCard({ resource }: ResourceCardProps) {
             {resource.tags.slice(0, 3).map((tag) => (
               <span
                 key={tag}
-                className="rounded-full bg-slate-50 px-2 py-0.5 text-xs text-slate-500"
+                className="rounded bg-[#f1f5f6] px-2 py-0.5 text-[11px] text-[#607781]"
               >
                 #{tag}
               </span>
@@ -83,39 +88,29 @@ export function ResourceCard({ resource }: ResourceCardProps) {
         )}
 
         <div className="mt-auto flex items-center gap-2 pt-2">
-          <a
-            href={resource.url}
-            target="_blank"
-            rel="noopener noreferrer"
-            className="flex flex-1 items-center justify-center gap-1.5 rounded-lg bg-brand-600 px-3 py-2.5 text-sm font-medium text-white transition hover:bg-brand-700 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-brand-700"
-          >
-            Ver recurso
-          </a>
-          <FavoriteButton
-            isFavorite={favorite}
-            onToggle={() => toggleFavorite(resource.id)}
-            size="sm"
-          />
+          {validLink ? (
+            <a
+              href={resource.url}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="flex flex-1 items-center justify-center gap-1.5 rounded bg-brand-600 px-3 py-2 text-sm font-semibold text-white transition hover:bg-brand-700 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-brand-700"
+            >
+              Ver recurso
+            </a>
+          ) : (
+            <span
+              aria-disabled="true"
+              className="flex flex-1 cursor-not-allowed items-center justify-center rounded bg-slate-200 px-3 py-2 text-sm font-semibold text-slate-600"
+            >
+              Enlace pendiente
+            </span>
+          )}
           <ShareButton
             title={resource.title}
             text={resource.description}
             url={shareUrl}
             size="sm"
           />
-          <button
-            type="button"
-            onClick={() => toggleCompleted(resource.id)}
-            aria-pressed={completed}
-            aria-label={completed ? "Desmarcar como completado" : "Marcar como completado"}
-            title={completed ? "Desmarcar como completado" : "Marcar como completado"}
-            className={`inline-flex h-9 w-9 items-center justify-center rounded-lg border text-lg transition ${
-              completed
-                ? "border-emerald-200 bg-emerald-50 text-emerald-600 hover:bg-emerald-100"
-                : "border-slate-200 bg-white text-slate-400 hover:border-emerald-200 hover:text-emerald-500"
-            }`}
-          >
-            <span aria-hidden="true">{completed ? "✅" : "⬜"}</span>
-          </button>
         </div>
       </div>
     </article>

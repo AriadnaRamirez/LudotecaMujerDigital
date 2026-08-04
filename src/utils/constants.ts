@@ -14,39 +14,6 @@ export const DIFFICULTY_OPTIONS: Difficulty[] = [
   "Avanzado",
 ];
 
-export const TOPIC_OPTIONS: string[] = [
-  "Ciberseguridad",
-  "Redes",
-  "Linux",
-  "Cloud",
-  "Python",
-  "IA",
-  "Soft Skills",
-  "Empleabilidad",
-  "Desarrollo Web",
-];
-
-export const TYPE_OPTIONS: string[] = [
-  "Curso",
-  "Video",
-  "Laboratorio",
-  "Artículo",
-  "PDF",
-  "Cheat Sheet",
-  "Podcast",
-];
-
-export const PLATFORM_OPTIONS: string[] = [
-  "Cisco",
-  "YouTube",
-  "TryHackMe",
-  "Hack The Box",
-  "Coursera",
-  "AWS Skill Builder",
-  "Microsoft Learn",
-  "Google",
-];
-
 export const LANGUAGE_OPTIONS: Language[] = ["Español", "Inglés"];
 
 export const PRICE_OPTIONS: Price[] = ["Gratis", "Pago"];

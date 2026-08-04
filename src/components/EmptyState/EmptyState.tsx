@@ -12,14 +12,14 @@ export function EmptyState({
   return (
     <div
       role="status"
-      className="flex flex-col items-center justify-center gap-4 rounded-2xl border border-dashed border-slate-300 bg-white/60 px-6 py-16 text-center"
+      className="flex flex-col items-center justify-center gap-4 rounded-[6px] border border-dashed border-[#bdc9ce] bg-[#f8fafb] px-6 py-16 text-center"
     >
-      <div className="flex h-16 w-16 items-center justify-center rounded-full bg-slate-100 text-3xl" aria-hidden="true">
+      <div className="flex h-14 w-14 items-center justify-center rounded-full bg-brand-50 text-2xl" aria-hidden="true">
         🔍
       </div>
       <div>
-        <p className="text-lg font-semibold text-slate-900">{title}</p>
-        <p className="mt-1 text-sm text-slate-500">{message}</p>
+        <p className="text-lg font-semibold text-[#183f4e]">{title}</p>
+        <p className="mt-1 text-sm text-[#6f838b]">{message}</p>
       </div>
       {onClearFilters && (
         <button

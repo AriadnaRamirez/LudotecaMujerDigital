@@ -1,12 +1,9 @@
-import type { FilterState, ResourceStatus } from "../../types";
+import type { FilterState } from "../../types";
 import {
   DIFFICULTY_OPTIONS,
   LANGUAGE_OPTIONS,
-  PLATFORM_OPTIONS,
   PRICE_OPTIONS,
   TIME_OPTIONS,
-  TOPIC_OPTIONS,
-  TYPE_OPTIONS,
 } from "../../utils/constants";
 import { countActiveFilters } from "../../utils/filterResources";
 import { CheckboxGroup } from "./CheckboxGroup";
@@ -24,17 +21,11 @@ interface FiltersProps {
   filters: FilterState;
   onToggle: (key: MultiKey, value: string) => void;
   onTogglePrice: (value: FilterState["price"][number]) => void;
-  onStatusChange: (status: ResourceStatus) => void;
   onClear: () => void;
-  favoritesCount: number;
-  completedCount: number;
+  topicOptions: string[];
+  typeOptions: string[];
+  platformOptions: string[];
 }
-
-const STATUS_OPTIONS: { value: ResourceStatus; label: string; icon: string }[] = [
-  { value: "all", label: "Todos", icon: "📚" },
-  { value: "favorites", label: "Favoritos", icon: "❤️" },
-  { value: "completed", label: "Completados", icon: "✅" },
-];
 
 function Section({
   title,
@@ -48,11 +39,11 @@ function Section({
   return (
     <details
       open={defaultOpen}
-      className="group border-b border-slate-100 py-4 first:pt-0 last:border-b-0"
+      className="group border-b border-[#e8ecee] py-3 first:pt-0 last:border-b-0"
     >
-      <summary className="flex cursor-pointer list-none items-center justify-between text-sm font-semibold text-slate-900 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-brand-600">
+      <summary className="flex cursor-pointer list-none items-center justify-between text-sm font-semibold text-[#244d5c] focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-brand-600">
         {title}
-        <span className="text-slate-400 transition group-open:rotate-180" aria-hidden="true">
+        <span className="text-brand-600 transition group-open:rotate-180" aria-hidden="true">
           ▾
         </span>
       </summary>
@@ -65,17 +56,17 @@ export function Filters({
   filters,
   onToggle,
   onTogglePrice,
-  onStatusChange,
   onClear,
-  favoritesCount,
-  completedCount,
+  topicOptions,
+  typeOptions,
+  platformOptions,
 }: FiltersProps) {
   const activeCount = countActiveFilters(filters);
 
   return (
     <div>
       <div className="flex items-center justify-between pb-4">
-        <h2 className="text-base font-bold text-slate-900">Filtros</h2>
+        <h2 className="text-sm font-bold uppercase tracking-wide text-[#183f4e]">Filtros</h2>
         {activeCount > 0 && (
           <button
             type="button"
@@ -86,40 +77,6 @@ export function Filters({
           </button>
         )}
       </div>
-
-      <Section title="Estado">
-        <fieldset>
-          <legend className="sr-only">Estado del recurso</legend>
-          <div className="flex flex-col gap-1.5">
-            {STATUS_OPTIONS.map((option) => (
-              <label
-                key={option.value}
-                htmlFor={`status-${option.value}`}
-                className="flex cursor-pointer items-center justify-between gap-2 rounded-lg px-1.5 py-1 text-sm text-slate-600 transition hover:bg-slate-50"
-              >
-                <span className="flex items-center gap-2">
-                  <input
-                    id={`status-${option.value}`}
-                    type="radio"
-                    name="status"
-                    checked={filters.status === option.value}
-                    onChange={() => onStatusChange(option.value)}
-                    className="h-4 w-4 border-slate-300 text-brand-600 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-brand-600"
-                  />
-                  <span aria-hidden="true">{option.icon}</span>
-                  <span>{option.label}</span>
-                </span>
-                {option.value === "favorites" && favoritesCount > 0 && (
-                  <span className="text-xs text-slate-400">{favoritesCount}</span>
-                )}
-                {option.value === "completed" && completedCount > 0 && (
-                  <span className="text-xs text-slate-400">{completedCount}</span>
-                )}
-              </label>
-            ))}
-          </div>
-        </fieldset>
-      </Section>
 
       <Section title="Tiempo">
         <CheckboxGroup
@@ -141,31 +98,34 @@ export function Filters({
         />
       </Section>
 
-      <Section title="Tema">
+      <Section title="Área de impacto">
         <CheckboxGroup
-          legend="Tema"
+          legend="Área de impacto"
           name="topic"
-          options={TOPIC_OPTIONS.map((t) => ({ value: t, label: t }))}
+          options={topicOptions.map((topic) => ({ value: topic, label: topic }))}
           selected={filters.topic}
           onToggle={(value) => onToggle("topic", value)}
         />
       </Section>
 
-      <Section title="Tipo" defaultOpen={false}>
+      <Section title="Formato" defaultOpen={false}>
         <CheckboxGroup
-          legend="Tipo"
+          legend="Formato"
           name="type"
-          options={TYPE_OPTIONS.map((t) => ({ value: t, label: t }))}
+          options={typeOptions.map((type) => ({ value: type, label: type }))}
           selected={filters.type}
           onToggle={(value) => onToggle("type", value)}
         />
       </Section>
 
-      <Section title="Plataforma" defaultOpen={false}>
+      <Section title="Plataforma / fuente" defaultOpen={false}>
         <CheckboxGroup
-          legend="Plataforma"
+          legend="Plataforma o fuente"
           name="platform"
-          options={PLATFORM_OPTIONS.map((p) => ({ value: p, label: p }))}
+          options={platformOptions.map((platform) => ({
+            value: platform,
+            label: platform,
+          }))}
           selected={filters.platform}
           onToggle={(value) => onToggle("platform", value)}
         />

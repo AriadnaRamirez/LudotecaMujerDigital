@@ -6,6 +6,12 @@ export interface Resource {
   id: string;
   title: string;
   description: string;
+  /** Nombre completo de la participante que comparte el recurso. */
+  contributorName?: string;
+  /** Respuestas obligatorias de la convocatoria, escritas por la participante. */
+  discoveryContext?: string;
+  impactReflection?: string;
+  recommendationReason?: string;
   image: string;
   platform: string;
   topic: string;
@@ -30,8 +36,6 @@ export type TimeBucket =
   | "60-120"
   | "gt120";
 
-export type ResourceStatus = "all" | "favorites" | "completed";
-
 export type SortOption =
   | "recent"
   | "oldest"
@@ -51,7 +55,6 @@ export interface FilterState {
   language: Language[];
   price: Price[];
   certificate: ("si" | "no")[];
-  status: ResourceStatus;
 }
 
 export const EMPTY_FILTERS: FilterState = {
@@ -64,5 +67,4 @@ export const EMPTY_FILTERS: FilterState = {
   language: [],
   price: [],
   certificate: [],
-  status: "all",
 };

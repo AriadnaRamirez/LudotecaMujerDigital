@@ -2,7 +2,6 @@ import { Route, Routes } from "react-router-dom";
 import { Header } from "./components/Header/Header";
 import { Home } from "./pages/Home/Home";
 import { Detail } from "./pages/Detail/Detail";
-import { Favorites } from "./pages/Favorites/Favorites";
 
 function NotFound() {
   return (
@@ -23,17 +22,16 @@ function NotFound() {
 
 function App() {
   return (
-    <div className="flex min-h-screen flex-col bg-slate-50">
+    <div className="flex min-h-screen flex-col bg-[#f2f4f8]">
       <Header />
       <div className="flex-1">
         <Routes>
           <Route path="/" element={<Home />} />
           <Route path="/recurso/:id" element={<Detail />} />
-          <Route path="/favoritos" element={<Favorites />} />
           <Route path="*" element={<NotFound />} />
         </Routes>
       </div>
-      <footer className="border-t border-slate-200 bg-white py-6 text-center text-sm text-slate-400">
+      <footer className="border-t border-[#dfe5e8] bg-white py-5 text-center text-xs text-[#819198]">
         Tech Resource Hub · Ludoteca Digital
       </footer>
     </div>

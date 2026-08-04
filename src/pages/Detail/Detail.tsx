@@ -1,20 +1,19 @@
 import { useMemo } from "react";
 import { Link, Navigate, useParams } from "react-router-dom";
 import { getAllResources, getResourceById } from "../../hooks/useResources";
-import { useFavorites } from "../../hooks/useFavorites";
-import { useCompleted } from "../../hooks/useCompleted";
 import { DifficultyBadge } from "../../components/Badge/DifficultyBadge";
 import { Badge } from "../../components/Badge/Badge";
-import { FavoriteButton } from "../../components/FavoriteButton/FavoriteButton";
 import { ShareButton } from "../../components/ShareButton/ShareButton";
 import { ResourceCard } from "../../components/ResourceCard/ResourceCard";
 import { formatDate } from "../../utils/format";
+import {
+  getContributionIssues,
+  hasDirectLink,
+} from "../../utils/contributionAudit";
 
 export function Detail() {
   const { id } = useParams<{ id: string }>();
   const resource = id ? getResourceById(id) : undefined;
-  const { isFavorite, toggleFavorite } = useFavorites();
-  const { isCompleted, toggleCompleted } = useCompleted();
 
   const related = useMemo(() => {
     if (!resource) return [];
@@ -39,37 +38,38 @@ export function Detail() {
     return <Navigate to="/" replace />;
   }
 
-  const favorite = isFavorite(resource.id);
-  const completed = isCompleted(resource.id);
   const shareUrl = `${window.location.origin}/recurso/${resource.id}`;
   const relatedResources = [...related, ...relatedFallback];
+  const contributionIssues = getContributionIssues(resource);
+  const validLink = hasDirectLink(resource.url);
 
   return (
-    <div className="mx-auto max-w-5xl px-4 py-6 sm:px-6 lg:px-8">
-      <nav aria-label="Migas de pan" className="mb-4 text-sm text-slate-500">
+    <div className="mx-auto max-w-[1100px] px-4 py-6 sm:px-7">
+      <nav aria-label="Migas de pan" className="mb-4 text-sm text-[#687e87]">
         <Link to="/" className="font-medium text-brand-600 hover:underline">
           ← Volver a recursos
         </Link>
       </nav>
 
-      <article className="overflow-hidden rounded-2xl border border-slate-200 bg-white shadow-sm">
-        <div className="relative h-56 w-full overflow-hidden bg-slate-100 sm:h-72">
+      <article className="overflow-hidden rounded-[7px] border border-[#e0e5e8] bg-white shadow-[0_1px_3px_rgba(20,55,70,0.05)]">
+        <div className="relative h-52 w-full overflow-hidden bg-[#e7f4f5] sm:h-64">
           <img src={resource.image} alt="" className="h-full w-full object-cover" />
-          {completed && (
-            <span className="absolute left-4 top-4 inline-flex items-center gap-1.5 rounded-full bg-emerald-600 px-3 py-1.5 text-sm font-semibold text-white shadow">
-              <span aria-hidden="true">✅</span> Completado
-            </span>
-          )}
         </div>
 
-        <div className="p-6 sm:p-8">
-          <div className="flex items-center gap-2 text-sm font-medium text-slate-500">
+        <div className="p-5 sm:p-7">
+          <div className="flex items-center gap-2 text-sm font-medium text-[#66808a]">
             <span>{resource.platform}</span>
             <span aria-hidden="true">•</span>
             <span>{resource.topic}</span>
           </div>
+          <p className="mt-2 text-sm text-[#607781]">
+            Compartido por{" "}
+            <span className="font-semibold text-[#244d5c]">
+              {resource.contributorName?.trim() || "participante pendiente"}
+            </span>
+          </p>
 
-          <h1 className="mt-2 text-2xl font-bold text-slate-900 sm:text-3xl">
+          <h1 className="mt-2 text-2xl font-bold text-[#174554] sm:text-3xl">
             {resource.title}
           </h1>
 
@@ -84,42 +84,84 @@ export function Detail() {
             {resource.certificate && <Badge tone="brand">🎓 Certificado</Badge>}
           </div>
 
-          <p className="mt-5 text-base leading-relaxed text-slate-600">
+          <p className="mt-5 max-w-3xl text-base leading-relaxed text-[#596f78]">
             {resource.description}
           </p>
 
           <div className="mt-6 flex flex-wrap items-center gap-3">
-            <a
-              href={resource.url}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="inline-flex items-center gap-2 rounded-xl bg-brand-600 px-5 py-3 text-sm font-semibold text-white shadow-sm transition hover:bg-brand-700 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-brand-700"
-            >
-              Abrir recurso <span aria-hidden="true">↗</span>
-            </a>
-            <FavoriteButton isFavorite={favorite} onToggle={() => toggleFavorite(resource.id)} />
+            {validLink ? (
+              <a
+                href={resource.url}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="inline-flex items-center gap-2 rounded bg-brand-600 px-5 py-2.5 text-sm font-semibold text-white transition hover:bg-brand-700 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-brand-700"
+              >
+                Abrir recurso <span aria-hidden="true">↗</span>
+              </a>
+            ) : (
+              <span
+                aria-disabled="true"
+                className="inline-flex cursor-not-allowed items-center rounded bg-slate-200 px-5 py-2.5 text-sm font-semibold text-slate-600"
+              >
+                Enlace pendiente
+              </span>
+            )}
             <ShareButton
               title={resource.title}
               text={resource.description}
               url={shareUrl}
               variant="full"
             />
-            <button
-              type="button"
-              onClick={() => toggleCompleted(resource.id)}
-              aria-pressed={completed}
-              className={`inline-flex items-center gap-2 rounded-xl border px-4 py-3 text-sm font-medium transition ${
-                completed
-                  ? "border-emerald-200 bg-emerald-50 text-emerald-700 hover:bg-emerald-100"
-                  : "border-slate-200 bg-white text-slate-600 hover:bg-slate-50"
-              }`}
-            >
-              <span aria-hidden="true">{completed ? "✅" : "⬜"}</span>
-              {completed ? "Completado" : "Marcar como completado"}
-            </button>
           </div>
 
-          <dl className="mt-8 grid grid-cols-1 gap-x-6 gap-y-4 border-t border-slate-100 pt-6 sm:grid-cols-2 lg:grid-cols-3">
+          <section
+            aria-labelledby="contribution-title"
+            className="mt-8 border-t border-[#e8ecee] pt-6"
+          >
+            <div className="flex flex-wrap items-start justify-between gap-3">
+              <div>
+                <h2
+                  id="contribution-title"
+                  className="text-lg font-bold text-[#183f4e]"
+                >
+                  Aportación Mujer Digital
+                </h2>
+                <p className="mt-1 text-xs text-[#71858d]">
+                  Formato obligatorio de la convocatoria
+                </p>
+              </div>
+              {contributionIssues.length > 0 && (
+                <span className="rounded bg-amber-100 px-2.5 py-1 text-xs font-semibold text-amber-900">
+                  Revisión pendiente
+                </span>
+              )}
+            </div>
+
+            <dl className="mt-5 grid gap-5">
+              <ContributionAnswer
+                number="1"
+                question="¿Qué recurso deseas compartir?"
+                answer={resource.title}
+              />
+              <ContributionAnswer
+                number="2"
+                question="¿Cómo lo descubriste?"
+                answer={resource.discoveryContext}
+              />
+              <ContributionAnswer
+                number="3"
+                question="¿Cómo contribuyó —o habría contribuido— a tu desarrollo personal o profesional?"
+                answer={resource.impactReflection}
+              />
+              <ContributionAnswer
+                number="4"
+                question="¿Por qué lo recomendarías a otra participante de Mujer Digital?"
+                answer={resource.recommendationReason}
+              />
+            </dl>
+          </section>
+
+          <dl className="mt-8 grid grid-cols-1 gap-x-6 gap-y-4 border-t border-[#e8ecee] pt-6 sm:grid-cols-2 lg:grid-cols-3">
             <InfoItem label="Autor" value={resource.author ?? "No especificado"} />
             <InfoItem label="Categoría" value={resource.topic} />
             <InfoItem label="Duración" value={resource.durationLabel} />
@@ -135,7 +177,7 @@ export function Detail() {
 
       {relatedResources.length > 0 && (
         <section aria-labelledby="related-title" className="mt-10">
-          <h2 id="related-title" className="text-xl font-bold text-slate-900">
+          <h2 id="related-title" className="text-lg font-bold text-[#183f4e]">
             Recursos relacionados
           </h2>
           <div className="mt-4 grid grid-cols-1 gap-5 sm:grid-cols-2 lg:grid-cols-3">
@@ -152,10 +194,42 @@ export function Detail() {
 function InfoItem({ label, value }: { label: string; value: string }) {
   return (
     <div>
-      <dt className="text-xs font-medium uppercase tracking-wide text-slate-400">
+      <dt className="text-[11px] font-semibold uppercase tracking-wide text-[#82939a]">
         {label}
       </dt>
-      <dd className="mt-0.5 text-sm font-medium text-slate-800">{value}</dd>
+      <dd className="mt-0.5 text-sm font-medium text-[#294f5c]">{value}</dd>
+    </div>
+  );
+}
+
+function ContributionAnswer({
+  number,
+  question,
+  answer,
+}: {
+  number: string;
+  question: string;
+  answer?: string;
+}) {
+  const completed = Boolean(answer?.trim());
+
+  return (
+    <div className="grid gap-3 sm:grid-cols-[28px_1fr]">
+      <dt className="flex h-7 w-7 items-center justify-center rounded-full bg-brand-100 text-xs font-bold text-brand-800">
+        {number}
+      </dt>
+      <dd>
+        <p className="text-sm font-semibold text-[#294f5c]">{question}</p>
+        <p
+          className={`mt-1 text-sm leading-relaxed ${
+            completed ? "text-[#5b717a]" : "italic text-amber-800"
+          }`}
+        >
+          {completed
+            ? answer
+            : "Pendiente de completar por la participante con sus propias palabras."}
+        </p>
+      </dd>
     </div>
   );
 }
