@@ -13,8 +13,8 @@ export function ResourceCard({ resource }: ResourceCardProps) {
   const shareUrl = `${window.location.origin}${detailUrl}`;
 
   return (
-    <article className="group flex flex-col overflow-hidden rounded-2xl border border-slate-200 bg-white shadow-sm transition hover:-translate-y-0.5 hover:shadow-md">
-      <div className="relative h-40 w-full overflow-hidden bg-slate-100">
+    <article className="group flex min-h-[340px] flex-col overflow-hidden rounded-[6px] border border-[#dfe5e8] bg-white transition hover:border-brand-300 hover:shadow-[0_4px_14px_rgba(18,82,99,0.10)]">
+      <div className="relative h-28 w-full overflow-hidden bg-[#e7f4f5]">
         <Link
           to={detailUrl}
           aria-label={`Ver detalle de ${resource.title}`}
@@ -27,24 +27,24 @@ export function ResourceCard({ resource }: ResourceCardProps) {
             className="h-full w-full object-cover transition duration-300 group-hover:scale-105"
           />
         </Link>
-        <div className="pointer-events-none absolute right-2 top-2 z-20">
-          <Badge tone="neutral" className="bg-white/90 backdrop-blur">
+        <div className="pointer-events-none absolute left-2 top-2 z-20">
+          <Badge tone="brand" className="bg-brand-500 text-white shadow-none">
             {resource.type}
           </Badge>
         </div>
       </div>
 
-      <div className="flex flex-1 flex-col gap-2.5 p-4">
-        <div className="flex items-center gap-2 text-xs font-medium text-slate-500">
+      <div className="flex flex-1 flex-col gap-2.5 p-3.5">
+        <div className="flex items-center gap-2 text-[11px] font-medium text-[#65808a]">
           <span>{resource.platform}</span>
-          <span aria-hidden="true">•</span>
+          <span className="text-brand-400" aria-hidden="true">•</span>
           <span>{resource.topic}</span>
         </div>
 
-        <h3 className="line-clamp-2 text-base font-semibold text-slate-900">
+        <h3 className="line-clamp-2 text-[15px] font-bold leading-snug text-[#17546a]">
           <Link
             to={detailUrl}
-            className="rounded-sm transition hover:text-brand-700 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-brand-600"
+            className="rounded-sm transition hover:text-brand-600 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-brand-600"
           >
             {resource.title}
           </Link>
@@ -61,7 +61,7 @@ export function ResourceCard({ resource }: ResourceCardProps) {
             {resource.tags.slice(0, 3).map((tag) => (
               <span
                 key={tag}
-                className="rounded-full bg-slate-50 px-2 py-0.5 text-xs text-slate-500"
+                className="rounded bg-[#f1f5f6] px-2 py-0.5 text-[11px] text-[#607781]"
               >
                 #{tag}
               </span>
@@ -74,7 +74,7 @@ export function ResourceCard({ resource }: ResourceCardProps) {
             href={resource.url}
             target="_blank"
             rel="noopener noreferrer"
-            className="flex flex-1 items-center justify-center gap-1.5 rounded-lg bg-brand-600 px-3 py-2.5 text-sm font-medium text-white transition hover:bg-brand-700 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-brand-700"
+            className="flex flex-1 items-center justify-center gap-1.5 rounded bg-brand-600 px-3 py-2 text-sm font-semibold text-white transition hover:bg-brand-700 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-brand-700"
           >
             Ver recurso
           </a>

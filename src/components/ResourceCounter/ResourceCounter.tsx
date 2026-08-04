@@ -4,8 +4,8 @@ interface ResourceCounterProps {
 
 export function ResourceCounter({ total }: ResourceCounterProps) {
   return (
-    <p className="text-sm font-medium text-slate-600" aria-live="polite">
-      <span className="text-lg font-bold text-slate-900">{total}</span>{" "}
+    <p className="text-sm font-medium text-[#607781]" aria-live="polite">
+      <span className="text-base font-bold text-[#183f4e]">{total}</span>{" "}
       {total === 1 ? "recurso encontrado" : "recursos encontrados"}
     </p>
   );
@@ -18,9 +18,9 @@ interface ShowingCounterProps {
 
 export function ShowingCounter({ shown, total }: ShowingCounterProps) {
   return (
-    <p className="text-center text-sm text-slate-500" aria-live="polite">
-      Mostrando <span className="font-semibold text-slate-700">{shown}</span> de{" "}
-      <span className="font-semibold text-slate-700">{total}</span> recursos
+    <p className="text-center text-sm text-[#71858d]" aria-live="polite">
+      Mostrando <span className="font-semibold text-[#345762]">{shown}</span> de{" "}
+      <span className="font-semibold text-[#345762]">{total}</span> recursos
     </p>
   );
 }

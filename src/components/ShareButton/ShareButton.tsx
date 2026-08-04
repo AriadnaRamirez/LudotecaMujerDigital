@@ -39,7 +39,7 @@ export function ShareButton({
     window.setTimeout(() => setFeedback(null), 2500);
   }
 
-  const sizeClasses = size === "sm" ? "h-9 w-9 text-lg" : "h-11 w-11 text-xl";
+  const sizeClasses = size === "sm" ? "h-9 w-9" : "h-10 w-10";
 
   return (
     <div className="relative inline-flex">
@@ -50,11 +50,21 @@ export function ShareButton({
         title="Compartir recurso"
         className={
           variant === "icon"
-            ? `inline-flex items-center justify-center rounded-lg border border-slate-200 bg-white text-slate-500 transition hover:border-brand-200 hover:text-brand-600 ${sizeClasses} ${className}`
-            : `inline-flex items-center justify-center gap-2 rounded-lg border border-slate-200 bg-white px-4 py-2.5 text-sm font-medium text-slate-700 transition hover:border-brand-200 hover:text-brand-600 ${className}`
+            ? `inline-flex items-center justify-center rounded border border-[#b9c6cb] bg-white text-[#617780] transition hover:border-brand-500 hover:text-brand-700 ${sizeClasses} ${className}`
+            : `inline-flex items-center justify-center gap-2 rounded border border-[#b9c6cb] bg-white px-4 py-2.5 text-sm font-medium text-[#516a74] transition hover:border-brand-500 hover:text-brand-700 ${className}`
         }
       >
-        <span aria-hidden="true">🔗</span>
+        <svg
+          viewBox="0 0 20 20"
+          className="h-4 w-4"
+          fill="none"
+          aria-hidden="true"
+        >
+          <circle cx="5" cy="10" r="2" stroke="currentColor" strokeWidth="1.5" />
+          <circle cx="15" cy="5" r="2" stroke="currentColor" strokeWidth="1.5" />
+          <circle cx="15" cy="15" r="2" stroke="currentColor" strokeWidth="1.5" />
+          <path d="m6.8 9.1 6.4-3.2M6.8 10.9l6.4 3.2" stroke="currentColor" strokeWidth="1.5" />
+        </svg>
         {variant === "full" && <span>Compartir</span>}
       </button>
       <span role="status" aria-live="polite" className="sr-only">

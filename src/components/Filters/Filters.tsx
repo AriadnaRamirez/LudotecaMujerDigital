@@ -39,11 +39,11 @@ function Section({
   return (
     <details
       open={defaultOpen}
-      className="group border-b border-slate-100 py-4 first:pt-0 last:border-b-0"
+      className="group border-b border-[#e8ecee] py-3 first:pt-0 last:border-b-0"
     >
-      <summary className="flex cursor-pointer list-none items-center justify-between text-sm font-semibold text-slate-900 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-brand-600">
+      <summary className="flex cursor-pointer list-none items-center justify-between text-sm font-semibold text-[#244d5c] focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-brand-600">
         {title}
-        <span className="text-slate-400 transition group-open:rotate-180" aria-hidden="true">
+        <span className="text-brand-600 transition group-open:rotate-180" aria-hidden="true">
           ▾
         </span>
       </summary>
@@ -63,7 +63,7 @@ export function Filters({
   return (
     <div>
       <div className="flex items-center justify-between pb-4">
-        <h2 className="text-base font-bold text-slate-900">Filtros</h2>
+        <h2 className="text-sm font-bold uppercase tracking-wide text-[#183f4e]">Filtros</h2>
         {activeCount > 0 && (
           <button
             type="button"

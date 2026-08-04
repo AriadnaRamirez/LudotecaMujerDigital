@@ -11,10 +11,13 @@ export function SearchBar({ value, onChange }: SearchBarProps) {
         Buscar recursos por título, plataforma, categoría, etiquetas o autor
       </label>
       <span
-        className="pointer-events-none absolute inset-y-0 left-0 flex items-center pl-4 text-slate-400"
+        className="pointer-events-none absolute inset-y-0 left-0 flex items-center pl-3 text-[#7d9098]"
         aria-hidden="true"
       >
-        🔍
+        <svg viewBox="0 0 20 20" className="h-4 w-4" fill="none">
+          <circle cx="8.5" cy="8.5" r="5.5" stroke="currentColor" strokeWidth="1.5" />
+          <path d="m13 13 4 4" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" />
+        </svg>
       </span>
       <input
         id="search-input"
@@ -23,14 +26,14 @@ export function SearchBar({ value, onChange }: SearchBarProps) {
         value={value}
         onChange={(event) => onChange(event.target.value)}
         placeholder="Buscar por título, plataforma, categoría, etiquetas o autor…"
-        className="w-full rounded-xl border border-slate-200 bg-white py-3 pl-11 pr-11 text-sm text-slate-900 shadow-sm transition placeholder:text-slate-400 focus-visible:border-brand-500 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-brand-600"
+        className="w-full rounded border border-[#b8c4ca] bg-white py-2.5 pl-9 pr-9 text-sm text-[#294d5a] transition placeholder:text-[#87969c] focus-visible:border-brand-500 focus-visible:outline-2 focus-visible:outline-offset-1 focus-visible:outline-brand-500"
       />
       {value && (
         <button
           type="button"
           onClick={() => onChange("")}
           aria-label="Limpiar búsqueda"
-          className="absolute inset-y-0 right-0 flex items-center pr-4 text-slate-400 transition hover:text-slate-600"
+          className="absolute inset-y-0 right-0 flex items-center pr-3 text-[#819198] transition hover:text-brand-700"
         >
           ✕
         </button>
