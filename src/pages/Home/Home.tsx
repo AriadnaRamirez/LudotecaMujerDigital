@@ -92,7 +92,6 @@ export function Home() {
           onClick={() => setIsDrawerOpen(true)}
           className="flex items-center justify-center gap-2 rounded border border-[#b8c4ca] bg-white px-4 py-2.5 text-sm font-medium text-[#506872] transition hover:border-brand-500 hover:text-brand-700 lg:hidden"
         >
-          <span aria-hidden="true">☰</span>
           Filtros
           {activeFilterCount > 0 && (
             <span className="flex h-5 min-w-5 items-center justify-center rounded-full bg-brand-600 px-1 text-xs font-semibold text-white">
