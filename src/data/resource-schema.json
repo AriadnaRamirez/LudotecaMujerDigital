@@ -1,0 +1,147 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "ludoteca-resource-entry",
+  "title": "Entrada de recurso — Ludoteca Mujer Digital",
+  "description": "Contrato de datos para cada objeto en src/data/resources.json. Pensado como si fuera un backend real, aunque la fuente siga siendo JSON.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "id",
+    "title",
+    "description",
+    "contributorName",
+    "discoveryContext",
+    "impactReflection",
+    "recommendationReason",
+    "image",
+    "platform",
+    "topic",
+    "type",
+    "difficulty",
+    "duration",
+    "durationLabel",
+    "language",
+    "price",
+    "certificate",
+    "tags",
+    "url"
+  ],
+  "limits": {
+    "id": { "minLength": 3, "maxLength": 80, "pattern": "^[a-z0-9]+(?:-[a-z0-9]+)*$" },
+    "title": { "minLength": 5, "maxLength": 120 },
+    "description": { "minLength": 40, "maxLength": 400 },
+    "contributorName": { "minLength": 5, "maxLength": 80 },
+    "discoveryContext": { "minLength": 30, "maxLength": 500 },
+    "impactReflection": { "minLength": 30, "maxLength": 500 },
+    "recommendationReason": { "minLength": 30, "maxLength": 500 },
+    "image": { "minLength": 12, "maxLength": 500 },
+    "platform": { "minLength": 2, "maxLength": 60 },
+    "author": { "minLength": 2, "maxLength": 80 },
+    "url": { "minLength": 12, "maxLength": 500 },
+    "tags": { "minItems": 2, "maxItems": 5, "itemMinLength": 2, "itemMaxLength": 30 },
+    "duration": { "minimum": 15, "maximum": 360 }
+  },
+  "enums": {
+    "difficulty": ["Principiante", "Intermedio", "Avanzado"],
+    "language": ["Español", "Inglés"],
+    "price": ["Gratis", "Pago"],
+    "certificate": [true, false],
+    "topic": [
+      "Organización y técnicas de estudio",
+      "Bienestar emocional",
+      "Finanzas personales",
+      "Aprendizaje de idiomas",
+      "Creatividad y diseño gráfico",
+      "Productividad",
+      "Habilidades de comunicación",
+      "Tecnología avanzada",
+      "Desarrollo de hábitos",
+      "Ciberseguridad",
+      "Redes",
+      "Linux",
+      "Cloud",
+      "Python",
+      "IA",
+      "Soft Skills",
+      "Empleabilidad",
+      "Desarrollo Web"
+    ],
+    "type": [
+      "Libro",
+      "Podcast",
+      "Canal de YouTube",
+      "Curso",
+      "Comunidad",
+      "Blog",
+      "Herramienta digital",
+      "Aplicación",
+      "Plantilla",
+      "PDF",
+      "Laboratorio",
+      "Video",
+      "Artículo",
+      "Cheat Sheet"
+    ],
+    "platform": [
+      "YouTube",
+      "Coursera",
+      "Cisco",
+      "TryHackMe",
+      "Hack The Box",
+      "AWS Skill Builder",
+      "Microsoft Learn",
+      "Google",
+      "Udemy",
+      "edX",
+      "LinkedIn Learning",
+      "Spotify",
+      "Notion",
+      "Medium",
+      "GitHub",
+      "Otro"
+    ]
+  },
+  "durationOptions": [
+    { "hours": 0.25, "duration": 15, "durationLabel": "15 min" },
+    { "hours": 0.5, "duration": 30, "durationLabel": "30 min" },
+    { "hours": 0.75, "duration": 45, "durationLabel": "45 min" },
+    { "hours": 1, "duration": 60, "durationLabel": "1 h" },
+    { "hours": 1.5, "duration": 90, "durationLabel": "1.5 h" },
+    { "hours": 2, "duration": 120, "durationLabel": "2 h" },
+    { "hours": 2.5, "duration": 150, "durationLabel": "2.5 h" },
+    { "hours": 3, "duration": 180, "durationLabel": "3 h" },
+    { "hours": 4, "duration": 240, "durationLabel": "4 h" },
+    { "hours": 5, "duration": 300, "durationLabel": "5 h" },
+    { "hours": 6, "duration": 360, "durationLabel": "6 h" }
+  ],
+  "urlRules": {
+    "resourceUrl": {
+      "protocols": ["https:"],
+      "forbiddenHosts": ["example.com", "localhost", "127.0.0.1"],
+      "mustBeDirect": true
+    },
+    "imageUrl": {
+      "protocols": ["https:"],
+      "forbiddenHosts": ["example.com", "localhost", "127.0.0.1"],
+      "forbiddenSchemes": ["data:", "blob:", "file:"],
+      "allowedExtensions": [".jpg", ".jpeg", ".png", ".webp", ".gif", ".svg"],
+      "allowKnownImageHostsWithoutExtension": [
+        "images.unsplash.com",
+        "i.ytimg.com",
+        "img.youtube.com",
+        "raw.githubusercontent.com",
+        "cdn.jsdelivr.net"
+      ]
+    }
+  },
+  "dateRules": {
+    "format": "YYYY-MM-DD",
+    "pattern": "^\\d{4}-\\d{2}-\\d{2}$",
+    "updatedAtMustBeOnOrAfterPublishedAt": true
+  },
+  "uniqueness": {
+    "id": "global",
+    "contributorName": "global-case-insensitive-accent-insensitive",
+    "url": "recommended-unique"
+  }
+}

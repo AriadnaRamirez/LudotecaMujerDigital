@@ -2,6 +2,10 @@ export type Difficulty = "Principiante" | "Intermedio" | "Avanzado";
 export type Language = "Español" | "Inglés";
 export type Price = "Gratis" | "Pago";
 
+/**
+ * Entrada del catálogo. El contrato completo (límites, enums, URLs)
+ * está en `src/data/resource-schema.json` y `GUIA-ESQUEMA-JSON.md`.
+ */
 export interface Resource {
   id: string;
   title: string;
@@ -12,17 +16,20 @@ export interface Resource {
   discoveryContext?: string;
   impactReflection?: string;
   recommendationReason?: string;
+  /** URL HTTPS pública de la imagen (no data URI ni ruta local). */
   image: string;
   platform: string;
   topic: string;
   type: string;
   difficulty: Difficulty;
-  duration: number; // minutos
+  /** Minutos; debe emparejar con durationLabel según el catálogo. */
+  duration: number;
   durationLabel: string;
   language: Language;
   price: Price;
   certificate: boolean;
   tags: string[];
+  /** URL HTTPS directa del recurso. */
   url: string;
   author?: string;
   publishedAt?: string;
