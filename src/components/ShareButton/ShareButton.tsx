@@ -27,11 +27,11 @@ export function ShareButton({
     const result = await shareResource({ title, text, url });
 
     if (result.method === "web-share" && result.success) {
-      setFeedback("Compartido");
+      setFeedback("¡Compartido!");
     } else if (result.method === "clipboard" && result.success) {
-      setFeedback("Enlace copiado");
+      setFeedback("Enlace copiado al portapapeles");
     } else if (result.method !== "web-share") {
-      setFeedback("No se pudo compartir");
+      setFeedback("No se pudo compartir el enlace");
     } else {
       return;
     }
@@ -39,7 +39,7 @@ export function ShareButton({
     window.setTimeout(() => setFeedback(null), 2500);
   }
 
-  const sizeClasses = size === "sm" ? "h-10 w-10" : "h-10 w-10";
+  const sizeClasses = size === "sm" ? "h-9 w-9" : "h-10 w-10";
 
   return (
     <div className="relative inline-flex">
@@ -50,8 +50,8 @@ export function ShareButton({
         title="Compartir recurso"
         className={
           variant === "icon"
-            ? `inline-flex items-center justify-center rounded-sm border border-line bg-surface text-muted transition hover:border-brand-400 hover:text-brand-800 ${sizeClasses} ${className}`
-            : `inline-flex items-center justify-center gap-2 rounded-sm border border-line bg-surface px-4 py-2.5 text-sm font-medium text-ink/80 transition hover:border-brand-400 hover:text-brand-800 ${className}`
+            ? `inline-flex items-center justify-center rounded border border-[#b9c6cb] bg-white text-[#617780] transition hover:border-brand-500 hover:text-brand-700 ${sizeClasses} ${className}`
+            : `inline-flex items-center justify-center gap-2 rounded border border-[#b9c6cb] bg-white px-4 py-2.5 text-sm font-medium text-[#516a74] transition hover:border-brand-500 hover:text-brand-700 ${className}`
         }
       >
         <svg
@@ -63,11 +63,7 @@ export function ShareButton({
           <circle cx="5" cy="10" r="2" stroke="currentColor" strokeWidth="1.5" />
           <circle cx="15" cy="5" r="2" stroke="currentColor" strokeWidth="1.5" />
           <circle cx="15" cy="15" r="2" stroke="currentColor" strokeWidth="1.5" />
-          <path
-            d="m6.8 9.1 6.4-3.2M6.8 10.9l6.4 3.2"
-            stroke="currentColor"
-            strokeWidth="1.5"
-          />
+          <path d="m6.8 9.1 6.4-3.2M6.8 10.9l6.4 3.2" stroke="currentColor" strokeWidth="1.5" />
         </svg>
         {variant === "full" && <span>Compartir</span>}
       </button>
@@ -76,7 +72,7 @@ export function ShareButton({
       </span>
       {feedback && (
         <span
-          className="absolute -top-9 left-1/2 -translate-x-1/2 whitespace-nowrap rounded-sm bg-ink px-2.5 py-1 text-xs font-medium text-surface"
+          className="absolute -top-9 left-1/2 -translate-x-1/2 whitespace-nowrap rounded-md bg-slate-900 px-2.5 py-1 text-xs font-medium text-white shadow-lg"
           aria-hidden="true"
         >
           {feedback}

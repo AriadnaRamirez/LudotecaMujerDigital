@@ -37,87 +37,66 @@ export function Detail() {
 
   const shareUrl = absoluteAppUrl(`/recurso/${resource.id}`);
   const relatedResources = [...related, ...relatedFallback];
-  const tags = Array.isArray(resource.tags) ? resource.tags : [];
+  const contributor = resource.contributorName?.trim();
+  const hasContributionAnswers = Boolean(
+    resource.discoveryContext?.trim() ||
+      resource.impactReflection?.trim() ||
+      resource.recommendationReason?.trim()
+  );
 
   return (
-    <div className="mx-auto max-w-[1080px] px-4 py-8 sm:px-7 animate-rise">
-      <nav aria-label="Migas de pan" className="mb-6">
-        <Link
-          to="/"
-          className="text-sm font-medium tracking-wide text-muted transition hover:text-brand-700"
-        >
-          Volver al catálogo
+    <div className="mx-auto max-w-[1100px] px-4 py-6 sm:px-7">
+      <nav aria-label="Migas de pan" className="mb-4 text-sm text-[#687e87]">
+        <Link to="/" className="font-medium text-brand-600 hover:underline">
+          ← Volver a recursos
         </Link>
       </nav>
 
-      <article className="overflow-hidden rounded-sm border border-line bg-surface/95 shadow-[0_24px_60px_-40px_rgba(23,27,26,0.45)]">
-        <div className="relative h-56 w-full overflow-hidden bg-brand-100 sm:h-72">
-          <img
-            src={resource.image}
-            alt=""
-            className="h-full w-full object-cover"
-          />
-          <div className="absolute inset-0 bg-gradient-to-t from-ink/35 via-transparent to-transparent" />
+      <article className="overflow-hidden rounded-[7px] border border-[#e0e5e8] bg-white shadow-[0_1px_3px_rgba(20,55,70,0.05)]">
+        <div className="relative h-52 w-full overflow-hidden bg-[#e7f4f5] sm:h-64">
+          <img src={resource.image} alt="" className="h-full w-full object-cover" />
         </div>
 
-        <div className="p-6 sm:p-9">
-          <div className="flex flex-wrap items-center gap-2 text-xs font-medium tracking-[0.12em] uppercase text-muted">
+        <div className="p-5 sm:p-7">
+          <div className="flex items-center gap-2 text-sm font-medium text-[#66808a]">
             <span>{resource.platform}</span>
-            <span aria-hidden="true" className="text-brass/80">
-              /
-            </span>
+            <span aria-hidden="true">•</span>
             <span>{resource.topic}</span>
-            <span aria-hidden="true" className="text-brass/80">
-              /
-            </span>
-            <span>{resource.type}</span>
           </div>
+          {contributor && (
+            <p className="mt-2 text-sm text-[#607781]">
+              Compartido por{" "}
+              <span className="font-semibold text-[#244d5c]">{contributor}</span>
+            </p>
+          )}
 
-          <p className="mt-3 text-sm text-muted">
-            Compartido por{" "}
-            <span className="font-medium text-ink">
-              {resource.contributorName?.trim() || "—"}
-            </span>
-          </p>
-
-          <h1 className="mt-3 font-display text-3xl font-semibold leading-tight tracking-tight text-ink sm:text-4xl">
+          <h1 className="mt-2 text-2xl font-bold text-[#174554] sm:text-3xl">
             {resource.title}
           </h1>
 
-          <div className="mt-4 flex flex-wrap items-center gap-2">
+          <div className="mt-3 flex flex-wrap items-center gap-2">
             <DifficultyBadge difficulty={resource.difficulty} />
             <Badge tone="info">{resource.durationLabel}</Badge>
+            <Badge tone="neutral">{resource.type}</Badge>
             <Badge tone="neutral">{resource.language}</Badge>
             <Badge tone={resource.price === "Gratis" ? "success" : "warning"}>
               {resource.price}
             </Badge>
-            <Badge tone="brand">
-              {resource.certificate ? "Con certificado" : "Sin certificado"}
-            </Badge>
+            {resource.certificate && <Badge tone="brand">Certificado</Badge>}
           </div>
 
-          <p className="mt-6 max-w-3xl text-base leading-relaxed text-muted">
+          <p className="mt-5 max-w-3xl text-base leading-relaxed text-[#596f78]">
             {resource.description}
           </p>
 
-          {tags.length > 0 && (
-            <div className="mt-5 flex flex-wrap gap-x-3 gap-y-1" aria-label="Etiquetas">
-              {tags.map((tag) => (
-                <span key={tag} className="text-xs tracking-wide text-muted">
-                  {tag}
-                </span>
-              ))}
-            </div>
-          )}
-
-          <div className="mt-7 flex flex-wrap items-center gap-3">
+          <div className="mt-6 flex flex-wrap items-center gap-3">
             <a
               href={resource.url}
               target="_blank"
               rel="noopener noreferrer"
-              className="inline-flex items-center rounded-sm bg-brand-800 px-5 py-2.5 text-sm font-medium tracking-wide text-surface transition hover:bg-brand-700 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-brand-700"
+              className="inline-flex items-center gap-2 rounded bg-brand-600 px-5 py-2.5 text-sm font-semibold text-white transition hover:bg-brand-700 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-brand-700"
             >
-              Abrir recurso
+              Abrir recurso <span aria-hidden="true">↗</span>
             </a>
             <ShareButton
               title={resource.title}
@@ -127,105 +106,74 @@ export function Detail() {
             />
           </div>
 
-          <section
-            aria-labelledby="contribution-title"
-            className="mt-10 border-t border-line pt-8"
-          >
-            <h2
-              id="contribution-title"
-              className="font-display text-2xl font-semibold text-ink"
+          {hasContributionAnswers && (
+            <section
+              aria-labelledby="contribution-title"
+              className="mt-8 border-t border-[#e8ecee] pt-6"
             >
-              Aportación
-            </h2>
-            <p className="mt-1 text-sm text-muted">
-              Reflexión de quien comparte este recurso
-            </p>
+              <div>
+                <h2
+                  id="contribution-title"
+                  className="text-lg font-bold text-[#183f4e]"
+                >
+                  Aportación Mujer Digital
+                </h2>
+                <p className="mt-1 text-xs text-[#71858d]">
+                  Experiencia de quien comparte este recurso
+                </p>
+              </div>
 
-            <dl className="mt-6 grid gap-6">
-              <ContributionAnswer
-                question="Recurso compartido"
-                answer={resource.title}
-              />
-              <ContributionAnswer
-                question="Cómo lo descubrió"
-                answer={resource.discoveryContext}
-              />
-              <ContributionAnswer
-                question="Impacto personal o profesional"
-                answer={resource.impactReflection}
-              />
-              <ContributionAnswer
-                question="Por qué lo recomienda"
-                answer={resource.recommendationReason}
-              />
-            </dl>
-          </section>
+              <dl className="mt-5 grid gap-5">
+                <ContributionAnswer
+                  number="1"
+                  question="¿Qué recurso deseas compartir?"
+                  answer={resource.title}
+                />
+                <ContributionAnswer
+                  number="2"
+                  question="¿Cómo lo descubriste?"
+                  answer={resource.discoveryContext}
+                />
+                <ContributionAnswer
+                  number="3"
+                  question="¿Cómo contribuyó —o habría contribuido— a tu desarrollo personal o profesional?"
+                  answer={resource.impactReflection}
+                />
+                <ContributionAnswer
+                  number="4"
+                  question="¿Por qué lo recomendarías a otra participante de Mujer Digital?"
+                  answer={resource.recommendationReason}
+                />
+              </dl>
+            </section>
+          )}
 
-          <section
-            aria-labelledby="specs-title"
-            className="mt-10 border-t border-line pt-8"
-          >
-            <h2
-              id="specs-title"
-              className="font-display text-2xl font-semibold text-ink"
-            >
-              Ficha completa
-            </h2>
-            <p className="mt-1 text-sm text-muted">
-              Todos los campos de la entrada en el catálogo
-            </p>
-
-            <dl className="mt-6 grid grid-cols-1 gap-x-8 gap-y-5 sm:grid-cols-2 lg:grid-cols-3">
-              <InfoItem label="Identificador" value={resource.id} />
-              <InfoItem
-                label="Participante"
-                value={resource.contributorName?.trim() || "—"}
-              />
-              <InfoItem label="Autor" value={resource.author?.trim() || "—"} />
-              <InfoItem label="Plataforma" value={resource.platform} />
-              <InfoItem label="Tema" value={resource.topic} />
-              <InfoItem label="Tipo" value={resource.type} />
-              <InfoItem label="Nivel" value={resource.difficulty} />
-              <InfoItem
-                label="Duración"
-                value={`${resource.durationLabel} (${resource.duration} min)`}
-              />
-              <InfoItem label="Idioma" value={resource.language} />
-              <InfoItem label="Precio" value={resource.price} />
-              <InfoItem
-                label="Certificado"
-                value={resource.certificate ? "Sí" : "No"}
-              />
-              <InfoItem label="Etiquetas" value={tags.join(", ") || "—"} />
-              <InfoItem
-                label="Publicación"
-                value={formatDate(resource.publishedAt)}
-              />
-              <InfoItem
-                label="Actualización"
-                value={formatDate(resource.updatedAt)}
-              />
-              <InfoItem label="Enlace" value={resource.url} />
-              <InfoItem label="Imagen" value={resource.image} />
-              <InfoItem
-                label="Descripción"
-                value={resource.description}
-                className="sm:col-span-2 lg:col-span-3"
-              />
-            </dl>
-          </section>
+          <dl className="mt-8 grid grid-cols-1 gap-x-6 gap-y-4 border-t border-[#e8ecee] pt-6 sm:grid-cols-2 lg:grid-cols-3">
+            <InfoItem label="Autor" value={resource.author ?? "No especificado"} />
+            <InfoItem label="Categoría" value={resource.topic} />
+            <InfoItem label="Duración" value={resource.durationLabel} />
+            <InfoItem label="Nivel" value={resource.difficulty} />
+            <InfoItem label="Idioma" value={resource.language} />
+            <InfoItem label="Certificado" value={resource.certificate ? "Sí" : "No"} />
+            <InfoItem label="Precio" value={resource.price} />
+            <InfoItem
+              label="Fecha de publicación"
+              value={formatDate(resource.publishedAt)}
+            />
+            <InfoItem
+              label="Fecha de actualización"
+              value={formatDate(resource.updatedAt)}
+            />
+          </dl>
         </div>
       </article>
 
       {relatedResources.length > 0 && (
-        <section aria-labelledby="related-title" className="mt-12">
-          <h2
-            id="related-title"
-            className="font-display text-2xl font-semibold text-ink"
-          >
-            Relacionados
+        <section aria-labelledby="related-title" className="mt-10">
+          <h2 id="related-title" className="text-lg font-bold text-[#183f4e]">
+            Recursos relacionados
           </h2>
-          <div className="mt-5 grid grid-cols-1 gap-5 sm:grid-cols-2 lg:grid-cols-3">
+          <div className="mt-4 grid grid-cols-1 gap-5 sm:grid-cols-2 lg:grid-cols-3">
             {relatedResources.map((item) => (
               <ResourceCard key={item.id} resource={item} />
             ))}
@@ -236,41 +184,37 @@ export function Detail() {
   );
 }
 
-function InfoItem({
-  label,
-  value,
-  className = "",
-}: {
-  label: string;
-  value: string;
-  className?: string;
-}) {
+function InfoItem({ label, value }: { label: string; value: string }) {
   return (
-    <div className={className}>
-      <dt className="text-[10px] font-medium uppercase tracking-[0.14em] text-muted">
+    <div>
+      <dt className="text-[11px] font-semibold uppercase tracking-wide text-[#82939a]">
         {label}
       </dt>
-      <dd className="mt-1 break-words text-sm leading-relaxed text-ink">
-        {value}
-      </dd>
+      <dd className="mt-0.5 text-sm font-medium text-[#294f5c]">{value}</dd>
     </div>
   );
 }
 
 function ContributionAnswer({
+  number,
   question,
   answer,
 }: {
+  number: string;
   question: string;
   answer?: string;
 }) {
+  const text = answer?.trim();
+  if (!text) return null;
+
   return (
-    <div className="border-l border-brass/50 pl-4">
-      <dt className="text-[10px] font-medium uppercase tracking-[0.14em] text-muted">
-        {question}
+    <div className="grid gap-3 sm:grid-cols-[28px_1fr]">
+      <dt className="flex h-7 w-7 items-center justify-center rounded-full bg-brand-100 text-xs font-bold text-brand-800">
+        {number}
       </dt>
-      <dd className="mt-1.5 text-sm leading-relaxed text-ink/90">
-        {answer?.trim() || "—"}
+      <dd>
+        <p className="text-sm font-semibold text-[#294f5c]">{question}</p>
+        <p className="mt-1 text-sm leading-relaxed text-[#5b717a]">{text}</p>
       </dd>
     </div>
   );
