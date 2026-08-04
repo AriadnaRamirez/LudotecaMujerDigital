@@ -18,8 +18,8 @@ Plantilla: [`src/data/resource-template.json`](./src/data/resource-template.json
 - **Búsqueda** por título, plataforma, área, etiquetas, autor y participante, sin distinguir mayúsculas/minúsculas ni acentos.
 - **Filtros combinables**: tiempo, nivel, tema, tipo, plataforma, idioma, precio y certificado, con opción de limpiar todos los filtros.
 - **Ordenamiento**: más recientes, más antiguos, menor/mayor duración, nivel, nombre A-Z/Z-A.
-- **Tarjetas de recurso** alimentadas por el JSON: muestran imagen, id, título, descripción, participante, autor, plataforma, tema, tipo, nivel, duración, idioma, precio, certificado, etiquetas, fechas, respuestas personales, URL y acciones.
-- **Página de detalle** con la aportación completa, todos los campos del esquema y recursos relacionados.
+- **Tarjetas de recurso** compactas (vista previa): imagen, tipo, plataforma, tema, título, participante, nivel, duración, idioma, etiquetas y acciones.
+- **Página de detalle** con la aportación completa y todos los campos del JSON, más recursos relacionados.
 - **Compartir** mediante la Web Share API, con fallback a copiar el enlace al portapapeles y confirmación visual.
 - **Contador de resultados** ("X recursos encontrados" y "Mostrando N de M recursos").
 - **Estado vacío** y **estados de carga** (skeleton cards).
