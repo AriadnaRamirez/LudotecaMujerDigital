@@ -92,3 +92,5 @@ EXPECTED_PARTICIPANTS=25 npm run validate:data
 ```
 
 La validación aplica el contrato de `resource-schema.json`: campos obligatorios, máximos de caracteres, enums, pares de duración, imagen/URL HTTPS y participantes duplicadas. El **equipo de revisión** confirma además la autenticidad de los textos y que cada enlace e imagen carguen bien.
+
+El `resources.json` actual incluye un **demo de 18 aportaciones** que ya pasa `npm run validate:data`. Debe reemplazarse por las aportaciones reales del equipo antes de la entrega final.
