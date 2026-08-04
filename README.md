@@ -2,10 +2,16 @@
 
 Sitio web para organizar y consultar las aportaciones colectivas de la comunidad Mujer Digital mediante búsqueda, filtros y páginas de detalle.
 
-## Guía para participantes
+## Guías para el equipo
 
-Si vas a compartir tu recurso, lee **[`COMO-ENVIAR-TU-JSON.md`](./COMO-ENVIAR-TU-JSON.md)**.  
-Para la entrega del equipo, consulta también [`CONVOCATORIA.md`](./CONVOCATORIA.md).
+| Documento | Para quién | Contenido |
+| --- | --- | --- |
+| [`COMO-ENVIAR-TU-JSON.md`](./COMO-ENVIAR-TU-JSON.md) | Participantes | Cómo armar y enviar su JSON al equipo de revisión |
+| [`GUIA-ESQUEMA-JSON.md`](./GUIA-ESQUEMA-JSON.md) | Todo el equipo | Restricciones tipo backend: máximos, enums, duraciones, URLs |
+| [`CONVOCATORIA.md`](./CONVOCATORIA.md) | Entrega final | Checklist de la convocatoria |
+
+Esquema máquina: [`src/data/resource-schema.json`](./src/data/resource-schema.json)  
+Plantilla: [`src/data/resource-template.json`](./src/data/resource-template.json)
 
 ## Funcionalidades
 
@@ -33,24 +39,13 @@ Para la entrega del equipo, consulta también [`CONVOCATORIA.md`](./CONVOCATORIA
 src/
  ├── assets/
  ├── components/
- │    ├── ResourceCard/
- │    ├── SearchBar/
- │    ├── Filters/
- │    ├── Header/
- │    ├── EmptyState/
- │    ├── Loading/
- │    ├── ShareButton/
- │    ├── Badge/
- │    ├── SortDropdown/
- │    └── ResourceCounter/
  ├── pages/
- │    ├── Home/
- │    └── Detail/
  ├── hooks/
  ├── utils/
  ├── data/
  │    ├── resources.json
- │    └── resource-template.json
+ │    ├── resource-template.json
+ │    └── resource-schema.json
  ├── types/
  └── App.tsx
 ```
@@ -96,4 +91,4 @@ npm run validate:data
 EXPECTED_PARTICIPANTS=25 npm run validate:data
 ```
 
-La validación comprueba campos obligatorios, enlaces válidos y participantes duplicadas. La autenticidad de los textos y el funcionamiento real de cada enlace siempre requieren revisión humana.
+La validación aplica el contrato de `resource-schema.json`: campos obligatorios, máximos de caracteres, enums, pares de duración, imagen/URL HTTPS y participantes duplicadas. El **equipo de revisión** confirma además la autenticidad de los textos y que cada enlace e imagen carguen bien.
