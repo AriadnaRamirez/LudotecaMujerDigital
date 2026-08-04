@@ -12,7 +12,6 @@ import { useResourceFilters } from "../../hooks/useResourceFilters";
 import { useDebouncedValue } from "../../hooks/useDebouncedValue";
 import { filterResources, countActiveFilters } from "../../utils/filterResources";
 import { sortResources } from "../../utils/sortResources";
-import { auditContributions } from "../../utils/contributionAudit";
 import type { SortOption } from "../../types";
 
 const PAGE_SIZE = 12;
@@ -31,7 +30,6 @@ export function Home() {
   const [visibleCount, setVisibleCount] = useState(PAGE_SIZE);
   const [isDrawerOpen, setIsDrawerOpen] = useState(false);
 
-  const audit = useMemo(() => auditContributions(resources), [resources]);
   const filterOptions = useMemo(
     () => ({
       topics: [...new Set(resources.map(({ topic }) => topic))].sort((a, b) =>
@@ -84,24 +82,6 @@ export function Home() {
         <h2 id="catalog-title" className="mb-3 text-base font-bold text-[#183f4e]">
           Vista general de recursos
         </h2>
-
-        {!isLoading && audit.pending > 0 && (
-          <div
-            role="status"
-            className="mb-4 rounded border border-amber-300 bg-amber-50 px-4 py-3 text-sm text-amber-950"
-          >
-            <p className="font-semibold">
-              Contenido de demostración: {audit.pending} aportaciones requieren
-              revisión antes de entregar.
-            </p>
-            <p className="mt-1 text-xs leading-relaxed text-amber-800">
-              Faltan {audit.missingContributor} nombres de participantes,{" "}
-              {audit.missingAnswers} respuestas personales y hay{" "}
-              {audit.invalidLinks} enlaces no válidos. La convocatoria exige
-              textos auténticos escritos sin IA.
-            </p>
-          </div>
-        )}
 
       <div className="mb-5 flex flex-col gap-2.5 sm:flex-row sm:items-center">
         <div className="flex-1">
