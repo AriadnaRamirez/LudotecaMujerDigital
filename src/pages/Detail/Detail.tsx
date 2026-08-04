@@ -37,12 +37,7 @@ export function Detail() {
 
   const shareUrl = absoluteAppUrl(`/recurso/${resource.id}`);
   const relatedResources = [...related, ...relatedFallback];
-  const contributor = resource.contributorName?.trim();
-  const hasContributionAnswers = Boolean(
-    resource.discoveryContext?.trim() ||
-      resource.impactReflection?.trim() ||
-      resource.recommendationReason?.trim()
-  );
+  const tags = Array.isArray(resource.tags) ? resource.tags : [];
 
   return (
     <div className="mx-auto max-w-[1100px] px-4 py-6 sm:px-7">
@@ -54,21 +49,28 @@ export function Detail() {
 
       <article className="overflow-hidden rounded-[7px] border border-[#e0e5e8] bg-white shadow-[0_1px_3px_rgba(20,55,70,0.05)]">
         <div className="relative h-52 w-full overflow-hidden bg-[#e7f4f5] sm:h-64">
-          <img src={resource.image} alt="" className="h-full w-full object-cover" />
+          <img
+            src={resource.image}
+            alt={resource.title}
+            className="h-full w-full object-cover"
+          />
         </div>
 
         <div className="p-5 sm:p-7">
-          <div className="flex items-center gap-2 text-sm font-medium text-[#66808a]">
+          <div className="flex flex-wrap items-center gap-2 text-sm font-medium text-[#66808a]">
             <span>{resource.platform}</span>
             <span aria-hidden="true">•</span>
             <span>{resource.topic}</span>
+            <span aria-hidden="true">•</span>
+            <span className="font-mono text-xs text-[#8a9aa2]">{resource.id}</span>
           </div>
-          {contributor && (
-            <p className="mt-2 text-sm text-[#607781]">
-              Compartido por{" "}
-              <span className="font-semibold text-[#244d5c]">{contributor}</span>
-            </p>
-          )}
+
+          <p className="mt-2 text-sm text-[#607781]">
+            Compartido por{" "}
+            <span className="font-semibold text-[#244d5c]">
+              {resource.contributorName?.trim() || "—"}
+            </span>
+          </p>
 
           <h1 className="mt-2 text-2xl font-bold text-[#174554] sm:text-3xl">
             {resource.title}
@@ -76,18 +78,34 @@ export function Detail() {
 
           <div className="mt-3 flex flex-wrap items-center gap-2">
             <DifficultyBadge difficulty={resource.difficulty} />
-            <Badge tone="info">⏱ {resource.durationLabel}</Badge>
+            <Badge tone="info">{resource.durationLabel}</Badge>
+            <Badge tone="neutral">{`${resource.duration} min`}</Badge>
             <Badge tone="neutral">{resource.type}</Badge>
             <Badge tone="neutral">{resource.language}</Badge>
             <Badge tone={resource.price === "Gratis" ? "success" : "warning"}>
               {resource.price}
             </Badge>
-            {resource.certificate && <Badge tone="brand">🎓 Certificado</Badge>}
+            <Badge tone="brand">
+              {resource.certificate ? "Con certificado" : "Sin certificado"}
+            </Badge>
           </div>
 
           <p className="mt-5 max-w-3xl text-base leading-relaxed text-[#596f78]">
             {resource.description}
           </p>
+
+          {tags.length > 0 && (
+            <div className="mt-4 flex flex-wrap gap-1.5" aria-label="tags">
+              {tags.map((tag) => (
+                <span
+                  key={tag}
+                  className="rounded bg-[#f1f5f6] px-2.5 py-1 text-xs text-[#607781]"
+                >
+                  {tag}
+                </span>
+              ))}
+            </div>
+          )}
 
           <div className="mt-6 flex flex-wrap items-center gap-3">
             <a
@@ -106,64 +124,78 @@ export function Detail() {
             />
           </div>
 
-          {hasContributionAnswers && (
-            <section
-              aria-labelledby="contribution-title"
-              className="mt-8 border-t border-[#e8ecee] pt-6"
-            >
-              <div>
-                <h2
-                  id="contribution-title"
-                  className="text-lg font-bold text-[#183f4e]"
-                >
-                  Aportación Mujer Digital
-                </h2>
-                <p className="mt-1 text-xs text-[#71858d]">
-                  Experiencia de quien comparte este recurso
-                </p>
-              </div>
+          <p className="mt-3 break-all text-xs text-[#819198]">{resource.url}</p>
 
-              <dl className="mt-5 grid gap-5">
-                <ContributionAnswer
-                  number="1"
-                  question="¿Qué recurso deseas compartir?"
-                  answer={resource.title}
-                />
-                <ContributionAnswer
-                  number="2"
-                  question="¿Cómo lo descubriste?"
-                  answer={resource.discoveryContext}
-                />
-                <ContributionAnswer
-                  number="3"
-                  question="¿Cómo contribuyó —o habría contribuido— a tu desarrollo personal o profesional?"
-                  answer={resource.impactReflection}
-                />
-                <ContributionAnswer
-                  number="4"
-                  question="¿Por qué lo recomendarías a otra participante de Mujer Digital?"
-                  answer={resource.recommendationReason}
-                />
-              </dl>
-            </section>
-          )}
+          <section
+            aria-labelledby="contribution-title"
+            className="mt-8 border-t border-[#e8ecee] pt-6"
+          >
+            <div>
+              <h2
+                id="contribution-title"
+                className="text-lg font-bold text-[#183f4e]"
+              >
+                Aportación Mujer Digital
+              </h2>
+              <p className="mt-1 text-xs text-[#71858d]">
+                Campos del JSON escritos por quien comparte el recurso
+              </p>
+            </div>
+
+            <dl className="mt-5 grid gap-5">
+              <ContributionAnswer
+                number="1"
+                question="¿Qué recurso deseas compartir?"
+                answer={resource.title}
+              />
+              <ContributionAnswer
+                number="2"
+                question="¿Cómo lo descubriste?"
+                field="discoveryContext"
+                answer={resource.discoveryContext}
+              />
+              <ContributionAnswer
+                number="3"
+                question="¿Cómo contribuyó —o habría contribuido— a tu desarrollo personal o profesional?"
+                field="impactReflection"
+                answer={resource.impactReflection}
+              />
+              <ContributionAnswer
+                number="4"
+                question="¿Por qué lo recomendarías a otra participante de Mujer Digital?"
+                field="recommendationReason"
+                answer={resource.recommendationReason}
+              />
+            </dl>
+          </section>
 
           <dl className="mt-8 grid grid-cols-1 gap-x-6 gap-y-4 border-t border-[#e8ecee] pt-6 sm:grid-cols-2 lg:grid-cols-3">
-            <InfoItem label="Autor" value={resource.author ?? "No especificado"} />
-            <InfoItem label="Categoría" value={resource.topic} />
-            <InfoItem label="Duración" value={resource.durationLabel} />
-            <InfoItem label="Nivel" value={resource.difficulty} />
-            <InfoItem label="Idioma" value={resource.language} />
-            <InfoItem label="Certificado" value={resource.certificate ? "Sí" : "No"} />
-            <InfoItem label="Precio" value={resource.price} />
+            <InfoItem label="id" value={resource.id} />
             <InfoItem
-              label="Fecha de publicación"
+              label="contributorName"
+              value={resource.contributorName?.trim() || "—"}
+            />
+            <InfoItem label="author" value={resource.author?.trim() || "—"} />
+            <InfoItem label="platform" value={resource.platform} />
+            <InfoItem label="topic" value={resource.topic} />
+            <InfoItem label="type" value={resource.type} />
+            <InfoItem label="difficulty" value={resource.difficulty} />
+            <InfoItem label="duration" value={String(resource.duration)} />
+            <InfoItem label="durationLabel" value={resource.durationLabel} />
+            <InfoItem label="language" value={resource.language} />
+            <InfoItem label="price" value={resource.price} />
+            <InfoItem
+              label="certificate"
+              value={resource.certificate ? "true" : "false"}
+            />
+            <InfoItem label="image" value={resource.image} />
+            <InfoItem label="url" value={resource.url} />
+            <InfoItem label="tags" value={tags.join(", ") || "—"} />
+            <InfoItem
+              label="publishedAt"
               value={formatDate(resource.publishedAt)}
             />
-            <InfoItem
-              label="Fecha de actualización"
-              value={formatDate(resource.updatedAt)}
-            />
+            <InfoItem label="updatedAt" value={formatDate(resource.updatedAt)} />
           </dl>
         </div>
       </article>
@@ -187,10 +219,12 @@ export function Detail() {
 function InfoItem({ label, value }: { label: string; value: string }) {
   return (
     <div>
-      <dt className="text-[11px] font-semibold uppercase tracking-wide text-[#82939a]">
+      <dt className="font-mono text-[11px] font-semibold uppercase tracking-wide text-[#82939a]">
         {label}
       </dt>
-      <dd className="mt-0.5 text-sm font-medium text-[#294f5c]">{value}</dd>
+      <dd className="mt-0.5 break-all text-sm font-medium text-[#294f5c]">
+        {value}
+      </dd>
     </div>
   );
 }
@@ -199,13 +233,14 @@ function ContributionAnswer({
   number,
   question,
   answer,
+  field,
 }: {
   number: string;
   question: string;
   answer?: string;
+  field?: string;
 }) {
-  const text = answer?.trim();
-  if (!text) return null;
+  const textValue = answer?.trim() || "—";
 
   return (
     <div className="grid gap-3 sm:grid-cols-[28px_1fr]">
@@ -214,7 +249,10 @@ function ContributionAnswer({
       </dt>
       <dd>
         <p className="text-sm font-semibold text-[#294f5c]">{question}</p>
-        <p className="mt-1 text-sm leading-relaxed text-[#5b717a]">{text}</p>
+        {field && (
+          <p className="mt-0.5 font-mono text-[10px] text-[#90a0a7]">{field}</p>
+        )}
+        <p className="mt-1 text-sm leading-relaxed text-[#5b717a]">{textValue}</p>
       </dd>
     </div>
   );
