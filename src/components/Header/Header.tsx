@@ -25,7 +25,7 @@ export function Header() {
           </span>
         </NavLink>
 
-        <nav aria-label="Navegación principal" className="flex items-center gap-1 sm:gap-2">
+        <nav aria-label="Navegación principal">
           <NavLink
             to="/"
             end
@@ -38,19 +38,6 @@ export function Header() {
             }
           >
             Inicio
-          </NavLink>
-          <NavLink
-            to="/favoritos"
-            className={({ isActive }) =>
-              `flex items-center gap-1 rounded-lg px-3 py-2 text-sm font-medium transition focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-brand-600 ${
-                isActive
-                  ? "bg-brand-50 text-brand-700"
-                  : "text-slate-600 hover:bg-slate-100"
-              }`
-            }
-          >
-            <span aria-hidden="true">❤️</span>
-            <span className="hidden sm:inline">Favoritos</span>
           </NavLink>
         </nav>
       </div>

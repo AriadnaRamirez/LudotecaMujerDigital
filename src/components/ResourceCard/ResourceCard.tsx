@@ -2,21 +2,13 @@ import { Link } from "react-router-dom";
 import type { Resource } from "../../types";
 import { Badge } from "../Badge/Badge";
 import { DifficultyBadge } from "../Badge/DifficultyBadge";
-import { FavoriteButton } from "../FavoriteButton/FavoriteButton";
 import { ShareButton } from "../ShareButton/ShareButton";
-import { useFavorites } from "../../hooks/useFavorites";
-import { useCompleted } from "../../hooks/useCompleted";
 
 interface ResourceCardProps {
   resource: Resource;
 }
 
 export function ResourceCard({ resource }: ResourceCardProps) {
-  const { isFavorite, toggleFavorite } = useFavorites();
-  const { isCompleted, toggleCompleted } = useCompleted();
-
-  const favorite = isFavorite(resource.id);
-  const completed = isCompleted(resource.id);
   const detailUrl = `/recurso/${resource.id}`;
   const shareUrl = `${window.location.origin}${detailUrl}`;
 
@@ -35,11 +27,6 @@ export function ResourceCard({ resource }: ResourceCardProps) {
             className="h-full w-full object-cover transition duration-300 group-hover:scale-105"
           />
         </Link>
-        {completed && (
-          <span className="pointer-events-none absolute left-2 top-2 z-20 inline-flex items-center gap-1 rounded-full bg-emerald-600 px-2.5 py-1 text-xs font-semibold text-white shadow">
-            <span aria-hidden="true">✅</span> Completado
-          </span>
-        )}
         <div className="pointer-events-none absolute right-2 top-2 z-20">
           <Badge tone="neutral" className="bg-white/90 backdrop-blur">
             {resource.type}
@@ -91,31 +78,12 @@ export function ResourceCard({ resource }: ResourceCardProps) {
           >
             Ver recurso
           </a>
-          <FavoriteButton
-            isFavorite={favorite}
-            onToggle={() => toggleFavorite(resource.id)}
-            size="sm"
-          />
           <ShareButton
             title={resource.title}
             text={resource.description}
             url={shareUrl}
             size="sm"
           />
-          <button
-            type="button"
-            onClick={() => toggleCompleted(resource.id)}
-            aria-pressed={completed}
-            aria-label={completed ? "Desmarcar como completado" : "Marcar como completado"}
-            title={completed ? "Desmarcar como completado" : "Marcar como completado"}
-            className={`inline-flex h-9 w-9 items-center justify-center rounded-lg border text-lg transition ${
-              completed
-                ? "border-emerald-200 bg-emerald-50 text-emerald-600 hover:bg-emerald-100"
-                : "border-slate-200 bg-white text-slate-400 hover:border-emerald-200 hover:text-emerald-500"
-            }`}
-          >
-            <span aria-hidden="true">{completed ? "✅" : "⬜"}</span>
-          </button>
         </div>
       </div>
     </article>

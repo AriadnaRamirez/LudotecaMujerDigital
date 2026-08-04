@@ -30,8 +30,6 @@ export type TimeBucket =
   | "60-120"
   | "gt120";
 
-export type ResourceStatus = "all" | "favorites" | "completed";
-
 export type SortOption =
   | "recent"
   | "oldest"
@@ -51,7 +49,6 @@ export interface FilterState {
   language: Language[];
   price: Price[];
   certificate: ("si" | "no")[];
-  status: ResourceStatus;
 }
 
 export const EMPTY_FILTERS: FilterState = {
@@ -64,5 +61,4 @@ export const EMPTY_FILTERS: FilterState = {
   language: [],
   price: [],
   certificate: [],
-  status: "all",
 };

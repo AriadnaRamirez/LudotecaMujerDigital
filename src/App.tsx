@@ -2,7 +2,6 @@ import { Route, Routes } from "react-router-dom";
 import { Header } from "./components/Header/Header";
 import { Home } from "./pages/Home/Home";
 import { Detail } from "./pages/Detail/Detail";
-import { Favorites } from "./pages/Favorites/Favorites";
 
 function NotFound() {
   return (
@@ -29,7 +28,6 @@ function App() {
         <Routes>
           <Route path="/" element={<Home />} />
           <Route path="/recurso/:id" element={<Detail />} />
-          <Route path="/favoritos" element={<Favorites />} />
           <Route path="*" element={<NotFound />} />
         </Routes>
       </div>

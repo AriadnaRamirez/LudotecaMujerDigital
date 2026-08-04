@@ -1,11 +1,8 @@
 import { useMemo } from "react";
 import { Link, Navigate, useParams } from "react-router-dom";
 import { getAllResources, getResourceById } from "../../hooks/useResources";
-import { useFavorites } from "../../hooks/useFavorites";
-import { useCompleted } from "../../hooks/useCompleted";
 import { DifficultyBadge } from "../../components/Badge/DifficultyBadge";
 import { Badge } from "../../components/Badge/Badge";
-import { FavoriteButton } from "../../components/FavoriteButton/FavoriteButton";
 import { ShareButton } from "../../components/ShareButton/ShareButton";
 import { ResourceCard } from "../../components/ResourceCard/ResourceCard";
 import { formatDate } from "../../utils/format";
@@ -13,8 +10,6 @@ import { formatDate } from "../../utils/format";
 export function Detail() {
   const { id } = useParams<{ id: string }>();
   const resource = id ? getResourceById(id) : undefined;
-  const { isFavorite, toggleFavorite } = useFavorites();
-  const { isCompleted, toggleCompleted } = useCompleted();
 
   const related = useMemo(() => {
     if (!resource) return [];
@@ -39,8 +34,6 @@ export function Detail() {
     return <Navigate to="/" replace />;
   }
 
-  const favorite = isFavorite(resource.id);
-  const completed = isCompleted(resource.id);
   const shareUrl = `${window.location.origin}/recurso/${resource.id}`;
   const relatedResources = [...related, ...relatedFallback];
 
@@ -55,11 +48,6 @@ export function Detail() {
       <article className="overflow-hidden rounded-2xl border border-slate-200 bg-white shadow-sm">
         <div className="relative h-56 w-full overflow-hidden bg-slate-100 sm:h-72">
           <img src={resource.image} alt="" className="h-full w-full object-cover" />
-          {completed && (
-            <span className="absolute left-4 top-4 inline-flex items-center gap-1.5 rounded-full bg-emerald-600 px-3 py-1.5 text-sm font-semibold text-white shadow">
-              <span aria-hidden="true">✅</span> Completado
-            </span>
-          )}
         </div>
 
         <div className="p-6 sm:p-8">
@@ -97,26 +85,12 @@ export function Detail() {
             >
               Abrir recurso <span aria-hidden="true">↗</span>
             </a>
-            <FavoriteButton isFavorite={favorite} onToggle={() => toggleFavorite(resource.id)} />
             <ShareButton
               title={resource.title}
               text={resource.description}
               url={shareUrl}
               variant="full"
             />
-            <button
-              type="button"
-              onClick={() => toggleCompleted(resource.id)}
-              aria-pressed={completed}
-              className={`inline-flex items-center gap-2 rounded-xl border px-4 py-3 text-sm font-medium transition ${
-                completed
-                  ? "border-emerald-200 bg-emerald-50 text-emerald-700 hover:bg-emerald-100"
-                  : "border-slate-200 bg-white text-slate-600 hover:bg-slate-50"
-              }`}
-            >
-              <span aria-hidden="true">{completed ? "✅" : "⬜"}</span>
-              {completed ? "Completado" : "Marcar como completado"}
-            </button>
           </div>
 
           <dl className="mt-8 grid grid-cols-1 gap-x-6 gap-y-4 border-t border-slate-100 pt-6 sm:grid-cols-2 lg:grid-cols-3">

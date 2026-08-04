@@ -1,4 +1,4 @@
-import type { FilterState, ResourceStatus } from "../../types";
+import type { FilterState } from "../../types";
 import {
   DIFFICULTY_OPTIONS,
   LANGUAGE_OPTIONS,
@@ -24,17 +24,8 @@ interface FiltersProps {
   filters: FilterState;
   onToggle: (key: MultiKey, value: string) => void;
   onTogglePrice: (value: FilterState["price"][number]) => void;
-  onStatusChange: (status: ResourceStatus) => void;
   onClear: () => void;
-  favoritesCount: number;
-  completedCount: number;
 }
-
-const STATUS_OPTIONS: { value: ResourceStatus; label: string; icon: string }[] = [
-  { value: "all", label: "Todos", icon: "📚" },
-  { value: "favorites", label: "Favoritos", icon: "❤️" },
-  { value: "completed", label: "Completados", icon: "✅" },
-];
 
 function Section({
   title,
@@ -65,10 +56,7 @@ export function Filters({
   filters,
   onToggle,
   onTogglePrice,
-  onStatusChange,
   onClear,
-  favoritesCount,
-  completedCount,
 }: FiltersProps) {
   const activeCount = countActiveFilters(filters);
 
@@ -86,40 +74,6 @@ export function Filters({
           </button>
         )}
       </div>
-
-      <Section title="Estado">
-        <fieldset>
-          <legend className="sr-only">Estado del recurso</legend>
-          <div className="flex flex-col gap-1.5">
-            {STATUS_OPTIONS.map((option) => (
-              <label
-                key={option.value}
-                htmlFor={`status-${option.value}`}
-                className="flex cursor-pointer items-center justify-between gap-2 rounded-lg px-1.5 py-1 text-sm text-slate-600 transition hover:bg-slate-50"
-              >
-                <span className="flex items-center gap-2">
-                  <input
-                    id={`status-${option.value}`}
-                    type="radio"
-                    name="status"
-                    checked={filters.status === option.value}
-                    onChange={() => onStatusChange(option.value)}
-                    className="h-4 w-4 border-slate-300 text-brand-600 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-brand-600"
-                  />
-                  <span aria-hidden="true">{option.icon}</span>
-                  <span>{option.label}</span>
-                </span>
-                {option.value === "favorites" && favoritesCount > 0 && (
-                  <span className="text-xs text-slate-400">{favoritesCount}</span>
-                )}
-                {option.value === "completed" && completedCount > 0 && (
-                  <span className="text-xs text-slate-400">{completedCount}</span>
-                )}
-              </label>
-            ))}
-          </div>
-        </fieldset>
-      </Section>
 
       <Section title="Tiempo">
         <CheckboxGroup

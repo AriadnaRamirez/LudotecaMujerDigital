@@ -25,9 +25,7 @@ export function matchesQuery(resource: Resource, query: string): boolean {
 
 export function matchesFilters(
   resource: Resource,
-  filters: FilterState,
-  favoriteIdSet: Set<string>,
-  completedIdSet: Set<string>
+  filters: FilterState
 ): boolean {
   if (!matchesQuery(resource, filters.query)) return false;
 
@@ -79,26 +77,14 @@ export function matchesFilters(
     if (wantsNo && !wantsYes && resource.certificate) return false;
   }
 
-  if (filters.status === "favorites" && !favoriteIdSet.has(resource.id)) {
-    return false;
-  }
-
-  if (filters.status === "completed" && !completedIdSet.has(resource.id)) {
-    return false;
-  }
-
   return true;
 }
 
 export function filterResources(
   resources: Resource[],
-  filters: FilterState,
-  favoriteIdSet: Set<string>,
-  completedIdSet: Set<string>
+  filters: FilterState
 ): Resource[] {
-  return resources.filter((resource) =>
-    matchesFilters(resource, filters, favoriteIdSet, completedIdSet)
-  );
+  return resources.filter((resource) => matchesFilters(resource, filters));
 }
 
 export function countActiveFilters(filters: FilterState): number {
@@ -110,7 +96,6 @@ export function countActiveFilters(filters: FilterState): number {
     filters.platform.length +
     filters.language.length +
     filters.price.length +
-    filters.certificate.length +
-    (filters.status !== "all" ? 1 : 0)
+    filters.certificate.length
   );
 }

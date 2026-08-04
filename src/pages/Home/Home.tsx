@@ -10,8 +10,6 @@ import { ResourceCounter, ShowingCounter } from "../../components/ResourceCounte
 import { useResources } from "../../hooks/useResources";
 import { useResourceFilters } from "../../hooks/useResourceFilters";
 import { useDebouncedValue } from "../../hooks/useDebouncedValue";
-import { useFavorites } from "../../hooks/useFavorites";
-import { useCompleted } from "../../hooks/useCompleted";
 import { filterResources, countActiveFilters } from "../../utils/filterResources";
 import { sortResources } from "../../utils/sortResources";
 import type { SortOption } from "../../types";
@@ -25,12 +23,9 @@ export function Home() {
     setQuery,
     toggle,
     togglePrice,
-    setStatus,
     clearFilters,
     clearAll,
   } = useResourceFilters();
-  const { favoriteIdSet, favoriteIds } = useFavorites();
-  const { completedIdSet, completedIds } = useCompleted();
   const [sortBy, setSortBy] = useState<SortOption>("recent");
   const [visibleCount, setVisibleCount] = useState(PAGE_SIZE);
   const [isDrawerOpen, setIsDrawerOpen] = useState(false);
@@ -42,9 +37,8 @@ export function Home() {
   );
 
   const filtered = useMemo(
-    () =>
-      filterResources(resources, effectiveFilters, favoriteIdSet, completedIdSet),
-    [resources, effectiveFilters, favoriteIdSet, completedIdSet]
+    () => filterResources(resources, effectiveFilters),
+    [resources, effectiveFilters]
   );
 
   const sorted = useMemo(() => sortResources(filtered, sortBy), [filtered, sortBy]);
@@ -94,10 +88,7 @@ export function Home() {
             filters={filters}
             onToggle={toggle}
             onTogglePrice={togglePrice}
-            onStatusChange={setStatus}
             onClear={clearAll}
-            favoritesCount={favoriteIds.length}
-            completedCount={completedIds.length}
           />
         </aside>
 
@@ -150,10 +141,7 @@ export function Home() {
           filters={filters}
           onToggle={toggle}
           onTogglePrice={togglePrice}
-          onStatusChange={setStatus}
           onClear={clearAll}
-          favoritesCount={favoriteIds.length}
-          completedCount={completedIds.length}
         />
       </FiltersDrawer>
     </div>

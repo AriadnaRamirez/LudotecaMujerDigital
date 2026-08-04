@@ -1,5 +1,5 @@
 import { useCallback, useMemo, useState } from "react";
-import { EMPTY_FILTERS, type FilterState, type ResourceStatus } from "../types";
+import { EMPTY_FILTERS, type FilterState } from "../types";
 
 type MultiKey =
   | "time"
@@ -34,10 +34,6 @@ export function useResourceFilters() {
     setFilters((prev) => ({ ...prev, price: toggleInArray(prev.price, value) }));
   }, []);
 
-  const setStatus = useCallback((status: ResourceStatus) => {
-    setFilters((prev) => ({ ...prev, status }));
-  }, []);
-
   const clearFilters = useCallback(() => {
     setFilters((prev) => ({ ...EMPTY_FILTERS, query: prev.query }));
   }, []);
@@ -55,7 +51,6 @@ export function useResourceFilters() {
     setQuery,
     toggle,
     togglePrice,
-    setStatus,
     clearFilters,
     clearAll,
     isDirty,
