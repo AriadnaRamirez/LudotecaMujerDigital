@@ -39,12 +39,15 @@ function Section({
   return (
     <details
       open={defaultOpen}
-      className="group border-b border-[#e8ecee] py-3 first:pt-0 last:border-b-0"
+      className="group border-b border-line py-3 first:pt-0 last:border-b-0"
     >
-      <summary className="flex cursor-pointer list-none items-center justify-between text-sm font-semibold text-[#244d5c] focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-brand-600">
+      <summary className="flex cursor-pointer list-none items-center justify-between text-sm font-medium text-ink focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-brand-600">
         {title}
-        <span className="text-brand-600 transition group-open:rotate-180" aria-hidden="true">
-          ▾
+        <span
+          className="text-muted transition group-open:rotate-180"
+          aria-hidden="true"
+        >
+          v
         </span>
       </summary>
       <div className="mt-3">{children}</div>
@@ -66,14 +69,16 @@ export function Filters({
   return (
     <div>
       <div className="flex items-center justify-between pb-4">
-        <h2 className="text-sm font-bold uppercase tracking-wide text-[#183f4e]">Filtros</h2>
+        <h2 className="text-[11px] font-medium uppercase tracking-[0.16em] text-muted">
+          Filtros
+        </h2>
         {activeCount > 0 && (
           <button
             type="button"
             onClick={onClear}
-            className="text-sm font-medium text-brand-600 transition hover:text-brand-700 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-brand-600"
+            className="text-sm font-medium text-brand-700 transition hover:text-brand-800 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-brand-600"
           >
-            Limpiar todo ({activeCount})
+            Limpiar ({activeCount})
           </button>
         )}
       </div>
