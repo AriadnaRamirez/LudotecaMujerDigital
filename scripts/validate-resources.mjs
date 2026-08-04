@@ -81,6 +81,6 @@ if (errors.length > 0) {
 } else {
   console.log("Validación estructural correcta.");
   console.log(
-    "Pendiente: abrir cada enlace y confirmar manualmente que los textos sean auténticos y propios."
+    "Siguiente paso: abrir cada enlace y confirmar que los textos sean auténticos y propios."
   );
 }

@@ -2,11 +2,7 @@
 
 Esta guía adapta el sitio a la convocatoria **Ludoteca Mujer Digital: Un Legado Colectivo**. No sustituye la lectura del PDF oficial.
 
-## Bloqueo actual
-
-`src/data/resources.json` contiene datos de demostración. Sus 79 enlaces apuntan a `example.com` y no incluye las respuestas personales ni el nombre de la participante que comparte cada recurso. **No debe entregarse así.**
-
-La convocatoria prohíbe usar IA generativa para buscar recursos, redactar descripciones, simular recomendaciones o generar material audiovisual. Por esta razón, esos campos se dejaron pendientes y deben completarlos las participantes con sus propias palabras.
+Para las participantes: consulta primero **[`COMO-ENVIAR-TU-JSON.md`](./COMO-ENVIAR-TU-JSON.md)**. Ahí está el paso a paso para armar y enviar su aportación.
 
 ## Una aportación por participante
 
@@ -37,6 +33,8 @@ Cada participante debe completar personalmente:
 - `recommendationReason`: por qué lo recomienda a otra participante de Mujer Digital.
 
 Los demás campos ayudan a organizar, buscar y filtrar la ludoteca.
+
+La convocatoria pide textos auténticos escritos por cada participante, sin usar IA generativa para buscar recursos, redactar descripciones o simular recomendaciones.
 
 ## Formatos y áreas sugeridos por la convocatoria
 
@@ -75,15 +73,13 @@ Formatos:
 | Organización y presentación | 10% | Navegación, orden visual y accesibilidad |
 | Reflexión y justificación | 10% | Respuestas profundas, honestas y claras |
 
-## Revisión final manual
+## Revisión final
 
 - Ejecutar `npm run validate:data` hasta que termine correctamente.
-- Abrir **cada enlace** en una ventana privada y confirmar que funciona sin permisos especiales.
-- Leer cada respuesta y confirmar con su autora que es auténtica, propia y no fue generada por IA.
-- Confirmar que los nombres completos estén escritos de forma consistente.
-- Revisar ortografía y datos sensibles antes de publicar.
+- Abrir **cada enlace** en una ventana privada y confirmar que funciona.
+- Confirmar con cada autora que sus respuestas son auténticas y propias.
+- Revisar nombres, ortografía y datos sensibles.
 - Probar búsqueda, filtros, tarjetas y detalles en computadora y celular.
 - Publicar el sitio en una URL estable con acceso público.
 - Probar enlaces directos a `/recurso/:id` después del despliegue.
 - Entregar el enlace por medio de la líder antes del **lunes 10 de agosto a las 12:00 p. m.**
-- No realizar cambios después del cierre si la organización así lo indica.

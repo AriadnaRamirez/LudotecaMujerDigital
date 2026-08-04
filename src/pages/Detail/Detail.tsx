@@ -6,10 +6,6 @@ import { Badge } from "../../components/Badge/Badge";
 import { ShareButton } from "../../components/ShareButton/ShareButton";
 import { ResourceCard } from "../../components/ResourceCard/ResourceCard";
 import { formatDate } from "../../utils/format";
-import {
-  getContributionIssues,
-  hasDirectLink,
-} from "../../utils/contributionAudit";
 
 export function Detail() {
   const { id } = useParams<{ id: string }>();
@@ -40,8 +36,12 @@ export function Detail() {
 
   const shareUrl = `${window.location.origin}/recurso/${resource.id}`;
   const relatedResources = [...related, ...relatedFallback];
-  const contributionIssues = getContributionIssues(resource);
-  const validLink = hasDirectLink(resource.url);
+  const contributor = resource.contributorName?.trim();
+  const hasContributionAnswers = Boolean(
+    resource.discoveryContext?.trim() ||
+      resource.impactReflection?.trim() ||
+      resource.recommendationReason?.trim()
+  );
 
   return (
     <div className="mx-auto max-w-[1100px] px-4 py-6 sm:px-7">
@@ -62,12 +62,12 @@ export function Detail() {
             <span aria-hidden="true">•</span>
             <span>{resource.topic}</span>
           </div>
-          <p className="mt-2 text-sm text-[#607781]">
-            Compartido por{" "}
-            <span className="font-semibold text-[#244d5c]">
-              {resource.contributorName?.trim() || "participante pendiente"}
-            </span>
-          </p>
+          {contributor && (
+            <p className="mt-2 text-sm text-[#607781]">
+              Compartido por{" "}
+              <span className="font-semibold text-[#244d5c]">{contributor}</span>
+            </p>
+          )}
 
           <h1 className="mt-2 text-2xl font-bold text-[#174554] sm:text-3xl">
             {resource.title}
@@ -89,23 +89,14 @@ export function Detail() {
           </p>
 
           <div className="mt-6 flex flex-wrap items-center gap-3">
-            {validLink ? (
-              <a
-                href={resource.url}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="inline-flex items-center gap-2 rounded bg-brand-600 px-5 py-2.5 text-sm font-semibold text-white transition hover:bg-brand-700 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-brand-700"
-              >
-                Abrir recurso <span aria-hidden="true">↗</span>
-              </a>
-            ) : (
-              <span
-                aria-disabled="true"
-                className="inline-flex cursor-not-allowed items-center rounded bg-slate-200 px-5 py-2.5 text-sm font-semibold text-slate-600"
-              >
-                Enlace pendiente
-              </span>
-            )}
+            <a
+              href={resource.url}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="inline-flex items-center gap-2 rounded bg-brand-600 px-5 py-2.5 text-sm font-semibold text-white transition hover:bg-brand-700 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-brand-700"
+            >
+              Abrir recurso <span aria-hidden="true">↗</span>
+            </a>
             <ShareButton
               title={resource.title}
               text={resource.description}
@@ -114,11 +105,11 @@ export function Detail() {
             />
           </div>
 
-          <section
-            aria-labelledby="contribution-title"
-            className="mt-8 border-t border-[#e8ecee] pt-6"
-          >
-            <div className="flex flex-wrap items-start justify-between gap-3">
+          {hasContributionAnswers && (
+            <section
+              aria-labelledby="contribution-title"
+              className="mt-8 border-t border-[#e8ecee] pt-6"
+            >
               <div>
                 <h2
                   id="contribution-title"
@@ -127,39 +118,34 @@ export function Detail() {
                   Aportación Mujer Digital
                 </h2>
                 <p className="mt-1 text-xs text-[#71858d]">
-                  Formato obligatorio de la convocatoria
+                  Experiencia de quien comparte este recurso
                 </p>
               </div>
-              {contributionIssues.length > 0 && (
-                <span className="rounded bg-amber-100 px-2.5 py-1 text-xs font-semibold text-amber-900">
-                  Revisión pendiente
-                </span>
-              )}
-            </div>
 
-            <dl className="mt-5 grid gap-5">
-              <ContributionAnswer
-                number="1"
-                question="¿Qué recurso deseas compartir?"
-                answer={resource.title}
-              />
-              <ContributionAnswer
-                number="2"
-                question="¿Cómo lo descubriste?"
-                answer={resource.discoveryContext}
-              />
-              <ContributionAnswer
-                number="3"
-                question="¿Cómo contribuyó —o habría contribuido— a tu desarrollo personal o profesional?"
-                answer={resource.impactReflection}
-              />
-              <ContributionAnswer
-                number="4"
-                question="¿Por qué lo recomendarías a otra participante de Mujer Digital?"
-                answer={resource.recommendationReason}
-              />
-            </dl>
-          </section>
+              <dl className="mt-5 grid gap-5">
+                <ContributionAnswer
+                  number="1"
+                  question="¿Qué recurso deseas compartir?"
+                  answer={resource.title}
+                />
+                <ContributionAnswer
+                  number="2"
+                  question="¿Cómo lo descubriste?"
+                  answer={resource.discoveryContext}
+                />
+                <ContributionAnswer
+                  number="3"
+                  question="¿Cómo contribuyó —o habría contribuido— a tu desarrollo personal o profesional?"
+                  answer={resource.impactReflection}
+                />
+                <ContributionAnswer
+                  number="4"
+                  question="¿Por qué lo recomendarías a otra participante de Mujer Digital?"
+                  answer={resource.recommendationReason}
+                />
+              </dl>
+            </section>
+          )}
 
           <dl className="mt-8 grid grid-cols-1 gap-x-6 gap-y-4 border-t border-[#e8ecee] pt-6 sm:grid-cols-2 lg:grid-cols-3">
             <InfoItem label="Autor" value={resource.author ?? "No especificado"} />
@@ -169,8 +155,14 @@ export function Detail() {
             <InfoItem label="Idioma" value={resource.language} />
             <InfoItem label="Certificado" value={resource.certificate ? "Sí" : "No"} />
             <InfoItem label="Precio" value={resource.price} />
-            <InfoItem label="Fecha de publicación" value={formatDate(resource.publishedAt)} />
-            <InfoItem label="Fecha de actualización" value={formatDate(resource.updatedAt)} />
+            <InfoItem
+              label="Fecha de publicación"
+              value={formatDate(resource.publishedAt)}
+            />
+            <InfoItem
+              label="Fecha de actualización"
+              value={formatDate(resource.updatedAt)}
+            />
           </dl>
         </div>
       </article>
@@ -211,7 +203,8 @@ function ContributionAnswer({
   question: string;
   answer?: string;
 }) {
-  const completed = Boolean(answer?.trim());
+  const text = answer?.trim();
+  if (!text) return null;
 
   return (
     <div className="grid gap-3 sm:grid-cols-[28px_1fr]">
@@ -220,15 +213,7 @@ function ContributionAnswer({
       </dt>
       <dd>
         <p className="text-sm font-semibold text-[#294f5c]">{question}</p>
-        <p
-          className={`mt-1 text-sm leading-relaxed ${
-            completed ? "text-[#5b717a]" : "italic text-amber-800"
-          }`}
-        >
-          {completed
-            ? answer
-            : "Pendiente de completar por la participante con sus propias palabras."}
-        </p>
+        <p className="mt-1 text-sm leading-relaxed text-[#5b717a]">{text}</p>
       </dd>
     </div>
   );
