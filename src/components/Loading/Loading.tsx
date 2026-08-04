@@ -4,18 +4,22 @@ export function SkeletonCard() {
       className="flex flex-col overflow-hidden rounded-[6px] border border-[#dfe5e8] bg-white"
       aria-hidden="true"
     >
-      <div className="h-28 w-full animate-skeleton bg-[#e3edef]" />
-      <div className="flex flex-1 flex-col gap-3 p-4">
+      <div className="h-32 w-full animate-skeleton bg-[#e3edef]" />
+      <div className="flex min-h-[420px] flex-1 flex-col gap-3 p-4">
         <div className="h-4 w-3/4 animate-skeleton rounded bg-slate-200" />
+        <div className="h-3 w-full animate-skeleton rounded bg-slate-200" />
+        <div className="h-3 w-5/6 animate-skeleton rounded bg-slate-200" />
         <div className="h-3 w-1/2 animate-skeleton rounded bg-slate-200" />
         <div className="flex gap-2">
-          <div className="h-5 w-16 animate-skeleton rounded-full bg-slate-200" />
-          <div className="h-5 w-16 animate-skeleton rounded-full bg-slate-200" />
-          <div className="h-5 w-16 animate-skeleton rounded-full bg-slate-200" />
+          <div className="h-5 w-16 animate-skeleton rounded bg-slate-200" />
+          <div className="h-5 w-16 animate-skeleton rounded bg-slate-200" />
+          <div className="h-5 w-16 animate-skeleton rounded bg-slate-200" />
         </div>
+        <div className="h-20 w-full animate-skeleton rounded bg-slate-200" />
         <div className="mt-auto flex gap-2 pt-2">
-          <div className="h-9 flex-1 animate-skeleton rounded-lg bg-slate-200" />
-          <div className="h-9 w-9 animate-skeleton rounded-lg bg-slate-200" />
+          <div className="h-9 flex-1 animate-skeleton rounded bg-slate-200" />
+          <div className="h-9 w-20 animate-skeleton rounded bg-slate-200" />
+          <div className="h-9 w-9 animate-skeleton rounded bg-slate-200" />
         </div>
       </div>
     </div>
