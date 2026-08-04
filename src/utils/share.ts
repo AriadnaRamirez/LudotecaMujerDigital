@@ -3,6 +3,14 @@ export interface ShareResult {
   success: boolean;
 }
 
+/** Absolute URL inside the app, respecting Vite/GitHub Pages base path. */
+export function absoluteAppUrl(path: string): string {
+  const normalized = path.startsWith("/") ? path.slice(1) : path;
+  return new URL(normalized, window.location.origin + import.meta.env.BASE_URL)
+    .href;
+}
+
+
 export async function shareResource(data: {
   title: string;
   text?: string;

@@ -3,6 +3,7 @@ import type { Resource } from "../../types";
 import { Badge } from "../Badge/Badge";
 import { DifficultyBadge } from "../Badge/DifficultyBadge";
 import { ShareButton } from "../ShareButton/ShareButton";
+import { absoluteAppUrl } from "../../utils/share";
 
 interface ResourceCardProps {
   resource: Resource;
@@ -10,7 +11,7 @@ interface ResourceCardProps {
 
 export function ResourceCard({ resource }: ResourceCardProps) {
   const detailUrl = `/recurso/${resource.id}`;
-  const shareUrl = `${window.location.origin}${detailUrl}`;
+  const shareUrl = absoluteAppUrl(detailUrl);
   const contributor = resource.contributorName?.trim();
 
   return (

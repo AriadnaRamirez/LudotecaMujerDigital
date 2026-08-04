@@ -69,6 +69,20 @@ npm run build
 npm run preview
 ```
 
+Para GitHub Pages (base del repo):
+
+```bash
+VITE_BASE=/LudotecaMujerDigital/ npm run build
+```
+
+## Deploy
+
+Cada push a `main` publica el sitio en GitHub Pages con el workflow `.github/workflows/deploy-pages.yml`.
+
+URL esperada:
+
+`https://ariadnaramirez.github.io/LudotecaMujerDigital/`
+
 ## Lint
 
 ```bash
