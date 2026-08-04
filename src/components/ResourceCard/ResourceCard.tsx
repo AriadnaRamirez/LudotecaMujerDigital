@@ -3,6 +3,10 @@ import type { Resource } from "../../types";
 import { Badge } from "../Badge/Badge";
 import { DifficultyBadge } from "../Badge/DifficultyBadge";
 import { ShareButton } from "../ShareButton/ShareButton";
+import {
+  hasDirectLink,
+  isContributionReady,
+} from "../../utils/contributionAudit";
 
 interface ResourceCardProps {
   resource: Resource;
@@ -11,6 +15,8 @@ interface ResourceCardProps {
 export function ResourceCard({ resource }: ResourceCardProps) {
   const detailUrl = `/recurso/${resource.id}`;
   const shareUrl = `${window.location.origin}${detailUrl}`;
+  const contributionReady = isContributionReady(resource);
+  const validLink = hasDirectLink(resource.url);
 
   return (
     <article className="group flex min-h-[340px] flex-col overflow-hidden rounded-[6px] border border-[#dfe5e8] bg-white transition hover:border-brand-300 hover:shadow-[0_4px_14px_rgba(18,82,99,0.10)]">
@@ -32,6 +38,11 @@ export function ResourceCard({ resource }: ResourceCardProps) {
             {resource.type}
           </Badge>
         </div>
+        {!contributionReady && (
+          <span className="pointer-events-none absolute right-2 top-2 z-20 rounded bg-amber-100 px-2 py-0.5 text-[10px] font-semibold text-amber-900">
+            Revisión pendiente
+          </span>
+        )}
       </div>
 
       <div className="flex flex-1 flex-col gap-2.5 p-3.5">
@@ -49,6 +60,13 @@ export function ResourceCard({ resource }: ResourceCardProps) {
             {resource.title}
           </Link>
         </h3>
+
+        <p className="text-[11px] text-[#6b8088]">
+          Compartido por{" "}
+          <span className="font-semibold text-[#49636d]">
+            {resource.contributorName?.trim() || "participante pendiente"}
+          </span>
+        </p>
 
         <div className="flex flex-wrap items-center gap-1.5">
           <DifficultyBadge difficulty={resource.difficulty} />
@@ -70,14 +88,23 @@ export function ResourceCard({ resource }: ResourceCardProps) {
         )}
 
         <div className="mt-auto flex items-center gap-2 pt-2">
-          <a
-            href={resource.url}
-            target="_blank"
-            rel="noopener noreferrer"
-            className="flex flex-1 items-center justify-center gap-1.5 rounded bg-brand-600 px-3 py-2 text-sm font-semibold text-white transition hover:bg-brand-700 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-brand-700"
-          >
-            Ver recurso
-          </a>
+          {validLink ? (
+            <a
+              href={resource.url}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="flex flex-1 items-center justify-center gap-1.5 rounded bg-brand-600 px-3 py-2 text-sm font-semibold text-white transition hover:bg-brand-700 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-brand-700"
+            >
+              Ver recurso
+            </a>
+          ) : (
+            <span
+              aria-disabled="true"
+              className="flex flex-1 cursor-not-allowed items-center justify-center rounded bg-slate-200 px-3 py-2 text-sm font-semibold text-slate-600"
+            >
+              Enlace pendiente
+            </span>
+          )}
           <ShareButton
             title={resource.title}
             text={resource.description}

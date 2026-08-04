@@ -8,7 +8,7 @@ export function SearchBar({ value, onChange }: SearchBarProps) {
   return (
     <div className="relative w-full">
       <label htmlFor="search-input" className="sr-only">
-        Buscar recursos por título, plataforma, categoría, etiquetas o autor
+        Buscar por título, plataforma, área, etiquetas, autor o participante
       </label>
       <span
         className="pointer-events-none absolute inset-y-0 left-0 flex items-center pl-3 text-[#7d9098]"
@@ -25,7 +25,7 @@ export function SearchBar({ value, onChange }: SearchBarProps) {
         role="searchbox"
         value={value}
         onChange={(event) => onChange(event.target.value)}
-        placeholder="Buscar por título, plataforma, categoría, etiquetas o autor…"
+        placeholder="Buscar por título, área, plataforma o participante…"
         className="w-full rounded border border-[#b8c4ca] bg-white py-2.5 pl-9 pr-9 text-sm text-[#294d5a] transition placeholder:text-[#87969c] focus-visible:border-brand-500 focus-visible:outline-2 focus-visible:outline-offset-1 focus-visible:outline-brand-500"
       />
       {value && (

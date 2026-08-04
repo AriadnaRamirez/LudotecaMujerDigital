@@ -12,6 +12,7 @@ import { useResourceFilters } from "../../hooks/useResourceFilters";
 import { useDebouncedValue } from "../../hooks/useDebouncedValue";
 import { filterResources, countActiveFilters } from "../../utils/filterResources";
 import { sortResources } from "../../utils/sortResources";
+import { auditContributions } from "../../utils/contributionAudit";
 import type { SortOption } from "../../types";
 
 const PAGE_SIZE = 12;
@@ -29,6 +30,22 @@ export function Home() {
   const [sortBy, setSortBy] = useState<SortOption>("recent");
   const [visibleCount, setVisibleCount] = useState(PAGE_SIZE);
   const [isDrawerOpen, setIsDrawerOpen] = useState(false);
+
+  const audit = useMemo(() => auditContributions(resources), [resources]);
+  const filterOptions = useMemo(
+    () => ({
+      topics: [...new Set(resources.map(({ topic }) => topic))].sort((a, b) =>
+        a.localeCompare(b, "es")
+      ),
+      types: [...new Set(resources.map(({ type }) => type))].sort((a, b) =>
+        a.localeCompare(b, "es")
+      ),
+      platforms: [
+        ...new Set(resources.map(({ platform }) => platform)),
+      ].sort((a, b) => a.localeCompare(b, "es")),
+    }),
+    [resources]
+  );
 
   const debouncedQuery = useDebouncedValue(filters.query, 250);
   const effectiveFilters = useMemo(
@@ -68,6 +85,24 @@ export function Home() {
           Vista general de recursos
         </h2>
 
+        {!isLoading && audit.pending > 0 && (
+          <div
+            role="status"
+            className="mb-4 rounded border border-amber-300 bg-amber-50 px-4 py-3 text-sm text-amber-950"
+          >
+            <p className="font-semibold">
+              Contenido de demostración: {audit.pending} aportaciones requieren
+              revisión antes de entregar.
+            </p>
+            <p className="mt-1 text-xs leading-relaxed text-amber-800">
+              Faltan {audit.missingContributor} nombres de participantes,{" "}
+              {audit.missingAnswers} respuestas personales y hay{" "}
+              {audit.invalidLinks} enlaces no válidos. La convocatoria exige
+              textos auténticos escritos sin IA.
+            </p>
+          </div>
+        )}
+
       <div className="mb-5 flex flex-col gap-2.5 sm:flex-row sm:items-center">
         <div className="flex-1">
           <SearchBar value={filters.query} onChange={setQuery} />
@@ -97,6 +132,9 @@ export function Home() {
             onToggle={toggle}
             onTogglePrice={togglePrice}
             onClear={clearAll}
+            topicOptions={filterOptions.topics}
+            typeOptions={filterOptions.types}
+            platformOptions={filterOptions.platforms}
           />
         </aside>
 
@@ -151,6 +189,9 @@ export function Home() {
           onToggle={toggle}
           onTogglePrice={togglePrice}
           onClear={clearAll}
+          topicOptions={filterOptions.topics}
+          typeOptions={filterOptions.types}
+          platformOptions={filterOptions.platforms}
         />
       </FiltersDrawer>
     </div>

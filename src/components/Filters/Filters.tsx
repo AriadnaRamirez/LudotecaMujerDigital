@@ -2,11 +2,8 @@ import type { FilterState } from "../../types";
 import {
   DIFFICULTY_OPTIONS,
   LANGUAGE_OPTIONS,
-  PLATFORM_OPTIONS,
   PRICE_OPTIONS,
   TIME_OPTIONS,
-  TOPIC_OPTIONS,
-  TYPE_OPTIONS,
 } from "../../utils/constants";
 import { countActiveFilters } from "../../utils/filterResources";
 import { CheckboxGroup } from "./CheckboxGroup";
@@ -25,6 +22,9 @@ interface FiltersProps {
   onToggle: (key: MultiKey, value: string) => void;
   onTogglePrice: (value: FilterState["price"][number]) => void;
   onClear: () => void;
+  topicOptions: string[];
+  typeOptions: string[];
+  platformOptions: string[];
 }
 
 function Section({
@@ -57,6 +57,9 @@ export function Filters({
   onToggle,
   onTogglePrice,
   onClear,
+  topicOptions,
+  typeOptions,
+  platformOptions,
 }: FiltersProps) {
   const activeCount = countActiveFilters(filters);
 
@@ -95,31 +98,34 @@ export function Filters({
         />
       </Section>
 
-      <Section title="Tema">
+      <Section title="Área de impacto">
         <CheckboxGroup
-          legend="Tema"
+          legend="Área de impacto"
           name="topic"
-          options={TOPIC_OPTIONS.map((t) => ({ value: t, label: t }))}
+          options={topicOptions.map((topic) => ({ value: topic, label: topic }))}
           selected={filters.topic}
           onToggle={(value) => onToggle("topic", value)}
         />
       </Section>
 
-      <Section title="Tipo" defaultOpen={false}>
+      <Section title="Formato" defaultOpen={false}>
         <CheckboxGroup
-          legend="Tipo"
+          legend="Formato"
           name="type"
-          options={TYPE_OPTIONS.map((t) => ({ value: t, label: t }))}
+          options={typeOptions.map((type) => ({ value: type, label: type }))}
           selected={filters.type}
           onToggle={(value) => onToggle("type", value)}
         />
       </Section>
 
-      <Section title="Plataforma" defaultOpen={false}>
+      <Section title="Plataforma / fuente" defaultOpen={false}>
         <CheckboxGroup
-          legend="Plataforma"
+          legend="Plataforma o fuente"
           name="platform"
-          options={PLATFORM_OPTIONS.map((p) => ({ value: p, label: p }))}
+          options={platformOptions.map((platform) => ({
+            value: platform,
+            label: platform,
+          }))}
           selected={filters.platform}
           onToggle={(value) => onToggle("platform", value)}
         />

@@ -17,6 +17,8 @@ export function matchesQuery(resource: Resource, query: string): boolean {
     resource.platform,
     resource.topic,
     resource.author ?? "",
+    resource.contributorName ?? "",
+    resource.description,
     ...resource.tags,
   ].map(normalize);
 
