@@ -1,4 +1,4 @@
-import { Route, Routes } from "react-router-dom";
+import { Link, Route, Routes } from "react-router-dom";
 import { Header } from "./components/Header/Header";
 import { Home } from "./pages/Home/Home";
 import { Detail } from "./pages/Detail/Detail";
@@ -13,9 +13,12 @@ function NotFound() {
       <p className="text-sm text-slate-500">
         La página que buscas no existe o fue movida.
       </p>
-      <a href="/" className="mt-2 text-sm font-medium text-brand-600 hover:underline">
+      <Link
+        to="/"
+        className="mt-2 text-sm font-medium text-brand-600 hover:underline"
+      >
         Volver al inicio
-      </a>
+      </Link>
     </div>
   );
 }

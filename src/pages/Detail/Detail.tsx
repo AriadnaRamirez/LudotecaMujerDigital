@@ -6,6 +6,7 @@ import { Badge } from "../../components/Badge/Badge";
 import { ShareButton } from "../../components/ShareButton/ShareButton";
 import { ResourceCard } from "../../components/ResourceCard/ResourceCard";
 import { formatDate } from "../../utils/format";
+import { absoluteAppUrl } from "../../utils/share";
 
 export function Detail() {
   const { id } = useParams<{ id: string }>();
@@ -34,7 +35,7 @@ export function Detail() {
     return <Navigate to="/" replace />;
   }
 
-  const shareUrl = `${window.location.origin}/recurso/${resource.id}`;
+  const shareUrl = absoluteAppUrl(`/recurso/${resource.id}`);
   const relatedResources = [...related, ...relatedFallback];
   const contributor = resource.contributorName?.trim();
   const hasContributionAnswers = Boolean(
