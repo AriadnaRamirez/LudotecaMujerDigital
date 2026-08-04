@@ -21,26 +21,26 @@ export function ResourceCard({ resource }: ResourceCardProps) {
   const shareUrl = `${window.location.origin}${detailUrl}`;
 
   return (
-    <article className="group relative flex flex-col overflow-hidden rounded-2xl border border-slate-200 bg-white shadow-sm transition hover:-translate-y-0.5 hover:shadow-md">
-      <Link
-        to={detailUrl}
-        className="absolute inset-0 z-10 rounded-2xl focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-brand-600"
-        aria-label={`Ver detalle de ${resource.title}`}
-      />
-
+    <article className="group flex flex-col overflow-hidden rounded-2xl border border-slate-200 bg-white shadow-sm transition hover:-translate-y-0.5 hover:shadow-md">
       <div className="relative h-40 w-full overflow-hidden bg-slate-100">
-        <img
-          src={resource.image}
-          alt=""
-          loading="lazy"
-          className="h-full w-full object-cover transition duration-300 group-hover:scale-105"
-        />
+        <Link
+          to={detailUrl}
+          aria-label={`Ver detalle de ${resource.title}`}
+          className="absolute inset-0 z-10 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-brand-600"
+        >
+          <img
+            src={resource.image}
+            alt=""
+            loading="lazy"
+            className="h-full w-full object-cover transition duration-300 group-hover:scale-105"
+          />
+        </Link>
         {completed && (
-          <span className="absolute left-2 top-2 z-20 inline-flex items-center gap-1 rounded-full bg-emerald-600 px-2.5 py-1 text-xs font-semibold text-white shadow">
+          <span className="pointer-events-none absolute left-2 top-2 z-20 inline-flex items-center gap-1 rounded-full bg-emerald-600 px-2.5 py-1 text-xs font-semibold text-white shadow">
             <span aria-hidden="true">✅</span> Completado
           </span>
         )}
-        <div className="absolute right-2 top-2 z-20">
+        <div className="pointer-events-none absolute right-2 top-2 z-20">
           <Badge tone="neutral" className="bg-white/90 backdrop-blur">
             {resource.type}
           </Badge>
@@ -55,7 +55,12 @@ export function ResourceCard({ resource }: ResourceCardProps) {
         </div>
 
         <h3 className="line-clamp-2 text-base font-semibold text-slate-900">
-          {resource.title}
+          <Link
+            to={detailUrl}
+            className="rounded-sm transition hover:text-brand-700 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-brand-600"
+          >
+            {resource.title}
+          </Link>
         </h3>
 
         <div className="flex flex-wrap items-center gap-1.5">
@@ -77,12 +82,11 @@ export function ResourceCard({ resource }: ResourceCardProps) {
           </div>
         )}
 
-        <div className="relative z-20 mt-auto flex items-center gap-2 pt-2">
+        <div className="mt-auto flex items-center gap-2 pt-2">
           <a
             href={resource.url}
             target="_blank"
             rel="noopener noreferrer"
-            onClick={(event) => event.stopPropagation()}
             className="flex flex-1 items-center justify-center gap-1.5 rounded-lg bg-brand-600 px-3 py-2.5 text-sm font-medium text-white transition hover:bg-brand-700 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-brand-700"
           >
             Ver recurso
@@ -100,11 +104,7 @@ export function ResourceCard({ resource }: ResourceCardProps) {
           />
           <button
             type="button"
-            onClick={(event) => {
-              event.preventDefault();
-              event.stopPropagation();
-              toggleCompleted(resource.id);
-            }}
+            onClick={() => toggleCompleted(resource.id)}
             aria-pressed={completed}
             aria-label={completed ? "Desmarcar como completado" : "Marcar como completado"}
             title={completed ? "Desmarcar como completado" : "Marcar como completado"}
